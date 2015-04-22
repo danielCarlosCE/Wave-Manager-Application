@@ -80,8 +80,9 @@
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.statusStripControl1 = new WaveManagerApp.StatusStripControl();
 			this.fileViewControl1 = new WaveManagerApp.FileViewControl();
+			this.statusStripControl1 = new WaveManagerApp.StatusStripControl();
+			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.menuStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -506,6 +507,16 @@
 			this.helpToolStripButton.Size = new System.Drawing.Size(36, 36);
 			this.helpToolStripButton.Text = "He&lp";
 			// 
+			// fileViewControl1
+			// 
+			this.fileViewControl1.BackColor = System.Drawing.SystemColors.MenuHighlight;
+			this.fileViewControl1.Dock = System.Windows.Forms.DockStyle.Left;
+			this.fileViewControl1.Location = new System.Drawing.Point(0, 67);
+			this.fileViewControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+			this.fileViewControl1.Name = "fileViewControl1";
+			this.fileViewControl1.Size = new System.Drawing.Size(148, 415);
+			this.fileViewControl1.TabIndex = 4;
+			// 
 			// statusStripControl1
 			// 
 			this.statusStripControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -516,15 +527,13 @@
 			this.statusStripControl1.Size = new System.Drawing.Size(843, 32);
 			this.statusStripControl1.TabIndex = 2;
 			// 
-			// fileViewControl1
+			// splitter1
 			// 
-			this.fileViewControl1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-			this.fileViewControl1.Dock = System.Windows.Forms.DockStyle.Left;
-			this.fileViewControl1.Location = new System.Drawing.Point(0, 67);
-			this.fileViewControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-			this.fileViewControl1.Name = "fileViewControl1";
-			this.fileViewControl1.Size = new System.Drawing.Size(154, 415);
-			this.fileViewControl1.TabIndex = 4;
+			this.splitter1.Location = new System.Drawing.Point(148, 67);
+			this.splitter1.Name = "splitter1";
+			this.splitter1.Size = new System.Drawing.Size(10, 415);
+			this.splitter1.TabIndex = 6;
+			this.splitter1.TabStop = false;
 			// 
 			// MainForm
 			// 
@@ -532,6 +541,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(843, 514);
+			this.Controls.Add(this.splitter1);
 			this.Controls.Add(this.fileViewControl1);
 			this.Controls.Add(this.statusStripControl1);
 			this.Controls.Add(this.toolStrip1);
@@ -612,6 +622,7 @@
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolBarToolStripMenuItem;
 		private FileViewControl fileViewControl1;
+		private System.Windows.Forms.Splitter splitter1;
 
 	}
 }

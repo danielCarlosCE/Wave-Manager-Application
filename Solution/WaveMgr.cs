@@ -15,6 +15,7 @@ namespace WaveManagerApp
 		public static Wave Read(string fileName)
 		{
 			Wave wave = new Wave();
+			wave.FileName = fileName;
 
 			BinaryReader br = new BinaryReader(File.OpenRead(fileName));
 			using (br)

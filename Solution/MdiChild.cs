@@ -38,7 +38,7 @@ namespace WaveManagerApp
 
 		private void OnLoad(object sender, EventArgs e)
 		{
-			Text = "Mdi Child " + _count.ToString();
+			Text = _wave.FileName;
 		}
 
 		private void OnPaint(object sender, PaintEventArgs e)
@@ -53,7 +53,6 @@ namespace WaveManagerApp
 				// Scrolling
 				AutoScrollMinSize = new Size(_wave.NumberOfSamples, Wave.MaxSampleValue);
 				g.TranslateTransform(AutoScrollPosition.X, AutoScrollPosition.Y);
-				Trace.WriteLine(@"=====> " + AutoScrollPosition.X.ToString() + ", " + AutoScrollPosition.Y.ToString());
 			}
 			else
 			{

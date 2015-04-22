@@ -2,10 +2,16 @@
 using System.IO;
 using System.Windows.Forms;
 
+public delegate void OpenFileEventHandler(String fileName);
+
+
 namespace WaveManagerApp
 {
 	public partial class MainForm : Form
 	{
+		public static event OpenFileEventHandler OpenFileEvent;
+
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -13,9 +19,13 @@ namespace WaveManagerApp
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-			
+			FileViewControl.DoubleClickEvent += OnFileViewControlDoubleClick;
 		}
 
+		void OnFileViewControlDoubleClick(string fileName)
+		{
+			LaunchWaveChild(new string[]{fileName});
+		}
 		private void OnFileNew(object sender, EventArgs e)
 		{
 			MdiChild f = new MdiChild();
@@ -54,6 +64,10 @@ namespace WaveManagerApp
 				c.SetWave(w);
 				c.MdiParent = this;
 				c.Show();
+				if (OpenFileEvent != null)
+				{
+					OpenFileEvent(fileName);
+				}
 			}
 		}
 
@@ -61,7 +75,7 @@ namespace WaveManagerApp
 		{
 			OpenFileDialog d = new OpenFileDialog();
 			d.Multiselect = true;
-			d.Filter = @"Wave Files|*.wav";
+			d.Filter = @"Wave Files|*" +  Wave.Extension;
 			using (d)
 			{
 				if (d.ShowDialog(this) != DialogResult.OK)

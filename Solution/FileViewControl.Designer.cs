@@ -28,16 +28,31 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileViewControl));
 			this.treeView1 = new System.Windows.Forms.TreeView();
+			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.SuspendLayout();
 			// 
 			// treeView1
 			// 
 			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.treeView1.ImageKey = "Folder.ico";
+			this.treeView1.ImageList = this.imageList1;
 			this.treeView1.Location = new System.Drawing.Point(0, 0);
 			this.treeView1.Name = "treeView1";
+			this.treeView1.SelectedImageIndex = 0;
 			this.treeView1.Size = new System.Drawing.Size(244, 540);
 			this.treeView1.TabIndex = 0;
+			this.treeView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.OnTreeViewItemDrag);
+			this.treeView1.DoubleClick += new System.EventHandler(this.OnDoubleClick);
+			// 
+			// imageList1
+			// 
+			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageList1.Images.SetKeyName(0, "Folder.ico");
+			this.imageList1.Images.SetKeyName(1, "Music.ico");
 			// 
 			// FileViewControl
 			// 
@@ -47,6 +62,7 @@
 			this.Controls.Add(this.treeView1);
 			this.Name = "FileViewControl";
 			this.Size = new System.Drawing.Size(244, 540);
+			this.Load += new System.EventHandler(this.OnLoad);
 			this.ResumeLayout(false);
 
 		}
@@ -54,5 +70,6 @@
 		#endregion
 
 		private System.Windows.Forms.TreeView treeView1;
+		private System.Windows.Forms.ImageList imageList1;
 	}
 }
