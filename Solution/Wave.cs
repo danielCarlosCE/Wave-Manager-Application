@@ -8,16 +8,16 @@ namespace WaveManagerApp
 		public const string Extension = ".wav";
 
 		private string _fileName;
+		private byte[] _header = new byte[HeaderSize];
+		private int _numberOfSamples = 0;
+		private byte[] _samples = null;
+
 
 		public string FileName
 		{
 			get { return _fileName; }
 			set { _fileName = value; }
 		}
-
-		private byte[] _header = new byte[HeaderSize];
-		private int _numberOfSamples = 0;
-		private byte[] _samples = null;
 
 		public byte[] Header
 		{
