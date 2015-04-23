@@ -8,9 +8,16 @@ namespace WaveManagerApp
 	public partial class MdiChild : Form
 	{
 		private static int _count = 0;
-		private Wave _wave = null;
 		private bool _isNormal = true;
+		private Wave _wave = null;
+		private bool _modified = false;
 
+		public bool Modified
+		{
+			get { return _modified = false; }
+			set { _modified = value; }
+		}
+		
 		public MdiChild()
 		{
 			InitializeComponent();
@@ -25,20 +32,15 @@ namespace WaveManagerApp
 			set { _isNormal = value; }
 		}
 
-		//public Wave Wave
-		//{
-		//	get { return _wave; }
-		//	set { _wave = Wave; }
-		//}
-
-		public void SetWave(Wave w)
+		public Wave Wave
 		{
-			_wave = w;
+			get { return _wave; }
+			set { _wave = value; }
 		}
 
 		private void OnLoad(object sender, EventArgs e)
 		{
-			Text = _wave.FileName;
+			Text =  _wave!=null ?  _wave.FileName : "Wave "+_count;
 		}
 
 		private void OnPaint(object sender, PaintEventArgs e)
@@ -73,5 +75,7 @@ namespace WaveManagerApp
 			Invalidate();
 
 		}
+	
+	
 	}
 }

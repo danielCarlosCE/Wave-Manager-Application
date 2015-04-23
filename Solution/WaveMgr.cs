@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Drawing;
+using System.IO;
 
 namespace WaveManagerApp
 {
@@ -6,7 +8,7 @@ namespace WaveManagerApp
 	{
 		public static bool IsValid(string fileName)
 		{
-			string ext = Path.GetExtension(fileName);
+			string ext = Path.GetExtension(fileName).ToLower();
 			if (ext == Wave.Extension)
 				return true;
 			return false;
@@ -28,5 +30,23 @@ namespace WaveManagerApp
 
 			return wave;
 		}
+
+		public static bool Save(Wave wave, string fileName)
+		{
+			byte[] wavebytes = new byte[wave.Header.Length + Wave.NSize + wave.Samples.Length];
+			System.Buffer.BlockCopy(wave.Header, 0, wavebytes, 0, wave.Header.Length);
+			System.Buffer.BlockCopy(BitConverter.GetBytes(wave.NumberOfSamples), 0, wavebytes, wave.Header.Length, Wave.NSize);
+			System.Buffer.BlockCopy(wave.Samples, 0, wavebytes, wave.Header.Length + Wave.NSize, wave.Samples.Length);
+
+			File.WriteAllBytes(fileName, wavebytes);
+
+			return true;
+		}
+
+		
+		
+
+
+	
 	}
 }

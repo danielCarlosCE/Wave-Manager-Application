@@ -34,8 +34,8 @@
 			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveTSMI = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveAsTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.closeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,9 +80,9 @@
 			this.pasteToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.fileViewControl1 = new WaveManagerApp.FileViewControl();
 			this.statusStripControl1 = new WaveManagerApp.StatusStripControl();
-			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.menuStrip1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -111,8 +111,8 @@
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.toolStripSeparator,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
+            this.saveTSMI,
+            this.saveAsTSMI,
             this.toolStripSeparator1,
             this.closeToolStripMenuItem,
             this.closeAllToolStripMenuItem,
@@ -150,20 +150,22 @@
 			this.toolStripSeparator.Name = "toolStripSeparator";
 			this.toolStripSeparator.Size = new System.Drawing.Size(164, 6);
 			// 
-			// saveToolStripMenuItem
+			// saveTSMI
 			// 
-			this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
-			this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
-			this.saveToolStripMenuItem.Text = "&Save";
+			this.saveTSMI.Image = ((System.Drawing.Image)(resources.GetObject("saveTSMI.Image")));
+			this.saveTSMI.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.saveTSMI.Name = "saveTSMI";
+			this.saveTSMI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.saveTSMI.Size = new System.Drawing.Size(167, 24);
+			this.saveTSMI.Text = "&Save";
+			this.saveTSMI.Click += new System.EventHandler(this.OnFileSave);
 			// 
-			// saveAsToolStripMenuItem
+			// saveAsTSMI
 			// 
-			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
-			this.saveAsToolStripMenuItem.Text = "Save &As";
+			this.saveAsTSMI.Name = "saveAsTSMI";
+			this.saveAsTSMI.Size = new System.Drawing.Size(167, 24);
+			this.saveAsTSMI.Text = "Save &As";
+			this.saveAsTSMI.Click += new System.EventHandler(this.OnFileSaveAs);
 			// 
 			// toolStripSeparator1
 			// 
@@ -507,6 +509,14 @@
 			this.helpToolStripButton.Size = new System.Drawing.Size(36, 36);
 			this.helpToolStripButton.Text = "He&lp";
 			// 
+			// splitter1
+			// 
+			this.splitter1.Location = new System.Drawing.Point(148, 67);
+			this.splitter1.Name = "splitter1";
+			this.splitter1.Size = new System.Drawing.Size(10, 415);
+			this.splitter1.TabIndex = 6;
+			this.splitter1.TabStop = false;
+			// 
 			// fileViewControl1
 			// 
 			this.fileViewControl1.BackColor = System.Drawing.SystemColors.MenuHighlight;
@@ -526,14 +536,6 @@
 			this.statusStripControl1.Name = "statusStripControl1";
 			this.statusStripControl1.Size = new System.Drawing.Size(843, 32);
 			this.statusStripControl1.TabIndex = 2;
-			// 
-			// splitter1
-			// 
-			this.splitter1.Location = new System.Drawing.Point(148, 67);
-			this.splitter1.Name = "splitter1";
-			this.splitter1.Size = new System.Drawing.Size(10, 415);
-			this.splitter1.TabIndex = 6;
-			this.splitter1.TabStop = false;
 			// 
 			// MainForm
 			// 
@@ -555,7 +557,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Form1";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-			this.Load += new System.EventHandler(this.MainForm_Load);
+			this.Load += new System.EventHandler(this.OnLoad);
 			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnDragDrop);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnDragEnter);
 			this.menuStrip1.ResumeLayout(false);
@@ -574,8 +576,8 @@
 		private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
-		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveTSMI;
+		private System.Windows.Forms.ToolStripMenuItem saveAsTSMI;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem printPreviewToolStripMenuItem;

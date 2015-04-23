@@ -4,6 +4,7 @@ namespace WaveManagerApp
 	public class Wave
 	{
 		public const int HeaderSize = 40;
+		public const int NSize = 4;
 		public const int MaxSampleValue = 255;
 		public const string Extension = ".wav";
 
