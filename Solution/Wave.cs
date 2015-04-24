@@ -1,12 +1,15 @@
 ﻿
+using System;
 namespace WaveManagerApp
 {
+	[Serializable]
 	public class Wave
 	{
 		public const int HeaderSize = 40;
 		public const int NSize = 4;
 		public const int MaxSampleValue = 255;
 		public const string Extension = ".wav";
+		public const string DataObject = "wave";
 
 		private string _fileName;
 		private byte[] _header = new byte[HeaderSize];

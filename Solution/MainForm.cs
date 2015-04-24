@@ -206,9 +206,6 @@ namespace WaveManagerApp
 		}
 
 		#endregion
-
-
-
 		private void OnWindowTileHorizontally(object sender, EventArgs e)
 		{
 			LayoutMdi(MdiLayout.TileHorizontal);
