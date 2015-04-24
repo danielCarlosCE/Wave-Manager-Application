@@ -71,6 +71,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveForm.Designer.cs">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="StatusStripControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -99,7 +105,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SaveForm.resx">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="StatusStripControl.resx">
       <DependentUpon>StatusStripControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Help.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -40,6 +40,7 @@
 			this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.closeAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.pageSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -117,6 +118,7 @@
             this.closeToolStripMenuItem,
             this.closeAllToolStripMenuItem,
             this.toolStripMenuItem2,
+            this.pageSetupToolStripMenuItem,
             this.printToolStripMenuItem,
             this.printPreviewToolStripMenuItem,
             this.toolStripSeparator2,
@@ -177,6 +179,7 @@
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
 			this.closeToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
 			this.closeToolStripMenuItem.Text = "Close";
+			this.closeToolStripMenuItem.Click += new System.EventHandler(this.OnFileClose);
 			// 
 			// closeAllToolStripMenuItem
 			// 
@@ -190,6 +193,13 @@
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
 			this.toolStripMenuItem2.Size = new System.Drawing.Size(164, 6);
 			// 
+			// pageSetupToolStripMenuItem
+			// 
+			this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
+			this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+			this.pageSetupToolStripMenuItem.Text = "Page Setup";
+			this.pageSetupToolStripMenuItem.Click += new System.EventHandler(this.OnFilePageSetup);
+			// 
 			// printToolStripMenuItem
 			// 
 			this.printToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripMenuItem.Image")));
@@ -198,6 +208,7 @@
 			this.printToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
 			this.printToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
 			this.printToolStripMenuItem.Text = "&Print";
+			this.printToolStripMenuItem.Click += new System.EventHandler(this.OnFilePrint);
 			// 
 			// printPreviewToolStripMenuItem
 			// 
@@ -206,6 +217,7 @@
 			this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
 			this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
 			this.printPreviewToolStripMenuItem.Text = "Print Pre&view";
+			this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.OnFilePrintPreview);
 			// 
 			// toolStripSeparator2
 			// 
@@ -625,6 +637,7 @@
 		private System.Windows.Forms.ToolStripMenuItem toolBarToolStripMenuItem;
 		private FileViewControl fileViewControl1;
 		private System.Windows.Forms.Splitter splitter1;
+		private System.Windows.Forms.ToolStripMenuItem pageSetupToolStripMenuItem;
 
 	}
 }

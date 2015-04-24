@@ -14,16 +14,8 @@ namespace WaveManagerApp
 
 		public bool Modified
 		{
-			get { return _modified = false; }
+			get { return _modified; }
 			set { _modified = value; }
-		}
-		
-		public MdiChild()
-		{
-			InitializeComponent();
-			DoubleBuffered = true;
-			ResizeRedraw = true;
-			_count++;
 		}
 
 		public bool IsNormal
@@ -38,6 +30,15 @@ namespace WaveManagerApp
 			set { _wave = value; }
 		}
 
+
+		public MdiChild()
+		{
+			InitializeComponent();
+			DoubleBuffered = true;
+			ResizeRedraw = true;
+			_count++;
+		}
+	
 		private void OnLoad(object sender, EventArgs e)
 		{
 			Text =  _wave!=null ?  _wave.FileName : "Wave "+_count;
@@ -73,9 +74,11 @@ namespace WaveManagerApp
 		{
 			IsNormal = !IsNormal;
 			Invalidate();
+			Modified = true;
 
 		}
 	
+
 	
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -15,6 +16,9 @@ namespace WaveManagerApp
 		private const string _filterOpen = "Wave Files|*" + Wave.Extension;
 		private const string PngExtension = ".png";
 		private const string _filterSave = _filterOpen + "|" + "Png Files|*"+PngExtension;
+
+		private PrintDocument _printDoc = new PrintDocument();
+		private int count = 0;
 
 
 		public MainForm()
@@ -46,82 +50,65 @@ namespace WaveManagerApp
 
 		private void OnFileSave(object sender, EventArgs e)
 		{
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
-			if (!File.Exists(active.Text))
-			{
-				OnFileSaveAs(sender, e);
-				return;
-			}
-			WaveMgr.Save(active.Wave, active.Text);
+			SaveWave();
 			
 		}
-		
+
 		private void OnFileSaveAs(object sender, EventArgs e)
 		{
-			SaveFileDialog saveDialog = new SaveFileDialog();
-			saveDialog.Filter = _filterSave;
-
-			using (saveDialog)
-			{
-				if (saveDialog.ShowDialog() == DialogResult.OK)
-				{
-					if (Path.GetExtension(saveDialog.FileName).ToLower() == PngExtension)
-					{
-						SaveAsPNG(saveDialog.FileName);	
-					}
-					else
-					{
-						MdiChild active = (MdiChild)this.ActiveMdiChild;
-						WaveMgr.Save(active.Wave, saveDialog.FileName);
-					}
-				}
-			}
-		}
-
-		private  void SaveAsPNG(string fileName)
-		{
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
-			int width = active.IsNormal ? active.Wave.NumberOfSamples : ClientRectangle.Width;
-			int height = active.IsNormal ? Wave.MaxSampleValue : ClientRectangle.Height;
-			
-			Image newBitmap = new Bitmap(width, height, CreateGraphics());
-			Graphics memryGraphics = Graphics.FromImage(newBitmap);
-			paintDraw(memryGraphics);
-			newBitmap.Save(fileName, ImageFormat.Png);
-		}
-
-		private void paintDraw(Graphics g)
-		{
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
-
-			if (active==null || active.Wave == null)
-				return;
-
-			if (active.IsNormal)
-			{
-				g.TranslateTransform(AutoScrollPosition.X, AutoScrollPosition.Y);
-			}
-			else
-			{
-				// Zooming
-				float xScaleFactor = (float)ClientRectangle.Width / active.Wave.NumberOfSamples;
-				float yScaleFactor = (float)ClientRectangle.Height / Wave.MaxSampleValue;
-				g.ScaleTransform(xScaleFactor, yScaleFactor);
-			}
-			for (int i = 0; i < active.Wave.NumberOfSamples - 1; i++)
-			{
-				g.DrawLine(Pens.Red, i, active.Wave.Samples[i], i + 1, active.Wave.Samples[i + 1]);
-			}
+			SaveWaveAs();
 		}
 
 		private void OnFileCloseAll(object sender, EventArgs e)
 		{
 			foreach (Form f in MdiChildren)
 			{
-				f.Close();
+				MdiChild active = (MdiChild) f;
+				CloseChild(active);
 			}
 		}
 
+		private void OnFileClose(object sender, EventArgs e)
+		{
+			MdiChild active = (MdiChild)this.ActiveMdiChild;
+			CloseChild(active);
+			
+		}
+
+		private void OnFilePageSetup(object sender, EventArgs e)
+		{
+			PageSetupDialog psDialog = new PageSetupDialog();
+			
+			psDialog.PageSettings = _printDoc.DefaultPageSettings;
+			psDialog.PrinterSettings = _printDoc.PrinterSettings;
+
+			if (psDialog.ShowDialog() == DialogResult.OK)
+			{
+				_printDoc.DefaultPageSettings = psDialog.PageSettings;
+				_printDoc.PrinterSettings = psDialog.PrinterSettings;
+			}
+		}
+
+		private void OnFilePrintPreview(object sender, EventArgs e)
+		{
+			PrintPreviewDialog _printViewDialog = new PrintPreviewDialog();
+			((Form)_printViewDialog).WindowState = FormWindowState.Maximized;
+			
+			_printViewDialog.Document = _printDoc;
+			_printViewDialog.ShowDialog();
+			Console.Write("\nend");
+		}
+
+		private void OnFilePrint(object sender, EventArgs e)
+		{
+			PrintDialog dlg = new PrintDialog();
+			dlg.Document = _printDoc;
+			if (dlg.ShowDialog() != DialogResult.OK)
+				return;
+
+			_printDoc.Print();
+
+		}
 		#endregion
 
 		#region UI Events
@@ -129,7 +116,7 @@ namespace WaveManagerApp
 		{
 			FileViewControl.DoubleClickEvent += OnFileViewControlDoubleClick;
 			Application.Idle += OnIdle;
-
+			_printDoc.PrintPage += OnPrintPage;
 		}
 
 		private void OnDragEnter(object sender, DragEventArgs e)
@@ -159,7 +146,6 @@ namespace WaveManagerApp
 
 		}
 
-
 		#endregion
 
 		#region Other Events
@@ -172,7 +158,55 @@ namespace WaveManagerApp
 			saveTSMI.Enabled = active!=null && active.Wave != null && active.Modified;
 			saveAsTSMI.Enabled = active != null && active.Wave != null;
 		}
+		private void OnPrintPage(object sender, PrintPageEventArgs e)
+		{
+			MdiChild active = (MdiChild)this.ActiveMdiChild;
+
+			int end = count + e.PageBounds.Width;
+
+			if (end > active.Wave.NumberOfSamples || !active.IsNormal)
+			{
+				end = active.Wave.NumberOfSamples;
+			}
+			
+			if (!active.IsNormal)
+			{
+				// Zooming
+				float xScaleFactor = (float)e.PageBounds.Width / active.Wave.NumberOfSamples;
+				float yScaleFactor = (float)e.PageBounds.Height / Wave.MaxSampleValue;
+				e.Graphics.ScaleTransform(xScaleFactor, yScaleFactor);
+			}
+
+
+			Console.Write("count:" + count + "end:" + end);
+			int x1 = 0;
+			for (int i = count; i < end - 1; i++, x1++)
+			{
+				int y1 = active.Wave.Samples[i];
+				int y2 = active.Wave.Samples[i + 1];
+				e.Graphics.DrawLine(Pens.Red, x1, y1, x1 + 1, y2);
+			}
+			if (!active.IsNormal)
+			{
+				e.HasMorePages = false;
+				return;
+			}
+			if (end >= active.Wave.NumberOfSamples)
+			{
+				e.HasMorePages = false;
+				count = 0;
+			}
+			else
+			{
+				e.HasMorePages = true;
+				count = end + 1;
+			}
+			
+
+		}
+
 		#endregion
+
 
 
 		private void OnWindowTileHorizontally(object sender, EventArgs e)
@@ -220,6 +254,134 @@ namespace WaveManagerApp
 
 		}
 
+		private bool SaveWave()
+		{
+			MdiChild active = (MdiChild)this.ActiveMdiChild;
+			if (!File.Exists(active.Text))
+			{
+				return SaveWaveAs();
+
+			}
+			return WaveMgr.Save(active.Wave, active.Text);
+		}
+
+		private bool SaveWaveAs()
+		{
+			SaveFileDialog saveDialog = new SaveFileDialog();
+			saveDialog.Filter = _filterSave;
+
+			using (saveDialog)
+			{
+				if (saveDialog.ShowDialog() == DialogResult.OK)
+				{
+					if (Path.GetExtension(saveDialog.FileName).ToLower() == PngExtension)
+					{
+						return SaveAsPNG(saveDialog.FileName);
+					}
+					else
+					{
+						MdiChild active = (MdiChild)this.ActiveMdiChild;
+						return WaveMgr.Save(active.Wave, saveDialog.FileName);
+					}
+				}
+				return false;
+			}
+		}
+
+		private bool SaveAsPNG(string fileName)
+		{
+			try
+			{
+				MdiChild active = (MdiChild)this.ActiveMdiChild;
+				int width = active.IsNormal ? active.Wave.NumberOfSamples : ClientRectangle.Width;
+				int height = active.IsNormal ? Wave.MaxSampleValue : ClientRectangle.Height;
+
+				Image newBitmap = new Bitmap(width, height, CreateGraphics());
+				Graphics memryGraphics = Graphics.FromImage(newBitmap);
+				paintDraw(memryGraphics);
+				newBitmap.Save(fileName, ImageFormat.Png);
+				return true;
+			}
+			catch (Exception e)
+			{
+				return false;
+			}
+		}
+
+		private void paintDraw(Graphics g)
+		{
+			MdiChild active = (MdiChild)this.ActiveMdiChild;
+
+			if (active == null || active.Wave == null)
+				return;
+
+			if (active.IsNormal)
+			{
+				g.TranslateTransform(AutoScrollPosition.X, AutoScrollPosition.Y);
+			}
+			else
+			{
+				// Zooming
+				float xScaleFactor = (float)ClientRectangle.Width / active.Wave.NumberOfSamples;
+				float yScaleFactor = (float)ClientRectangle.Height / Wave.MaxSampleValue;
+				g.ScaleTransform(xScaleFactor, yScaleFactor);
+			}
+
+
+		
+			for (int i = 0; i < active.Wave.NumberOfSamples-1; i++)
+			{
+				int  y1 = active.Wave.Samples[i];
+				int  y2 = active.Wave.Samples[i + 1] ;
+				
+				g.DrawLine(Pens.Red, i, y1, i+1, y2);
+			}
+			
+		}
+
+		private void CloseChild(MdiChild child)
+		{
+			if (child.Modified)
+			{
+				if (CheckIfWantSaveChanges())
+				{
+					child.Close();
+				}
+				return;
+			}
+
+			child.Close();
+		}
+
+		/** Return false when user clicks Cancel button*/
+		private bool CheckIfWantSaveChanges()
+		{
+			if (!saveToolStripButton.Enabled)
+				return true;
+
+			SaveForm saveform = new SaveForm();
+			using (saveform)
+			{
+
+				DialogResult dialogResult = saveform.ShowDialog();
+
+				if (dialogResult == DialogResult.Yes)
+				{
+					return SaveWave();
+				}
+				else if (dialogResult == DialogResult.No)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+		}
+
+		
 		
 
 	}
