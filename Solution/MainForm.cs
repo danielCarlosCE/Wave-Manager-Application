@@ -157,6 +157,9 @@ namespace WaveManagerApp
 			MdiChild active = (MdiChild)this.ActiveMdiChild;
 			saveTSMI.Enabled = active!=null && active.Wave != null && active.Modified;
 			saveAsTSMI.Enabled = active != null && active.Wave != null;
+			statusStripControl.wavesCount.Text = "Waves: "+MdiChildren.Length;
+			statusStripControl.samplesCount.Text ="Samples: " +( active==null || active.Wave ==null ? 0 :  active.Wave.NumberOfSamples);
+
 		}
 		private void OnPrintPage(object sender, PrintPageEventArgs e)
 		{
@@ -231,7 +234,8 @@ namespace WaveManagerApp
 				}
 				catch (Exception e)
 				{
-					MessageBox.Show("Invalid wave file ");
+					MessageBox.Show("Invalid wave file.");
+					Log.error("Invalid wave file.");
 					return;
 				}
 				MdiChild c = new MdiChild();
@@ -376,6 +380,16 @@ namespace WaveManagerApp
 				}
 			}
 
+		}
+
+		private void OnViewToolBar(object sender, EventArgs e)
+		{
+			toolStrip.Visible = !toolStrip.Visible;
+		}
+
+		private void OnViewStatusBar(object sender, EventArgs e)
+		{
+			statusStripControl.Visible = !statusStripControl.Visible;
 		}
 
 		

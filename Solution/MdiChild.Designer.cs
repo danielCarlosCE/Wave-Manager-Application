@@ -37,8 +37,8 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.cutTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.copyTSMI = new System.Windows.Forms.ToolStripMenuItem();
-			this.pasteTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.copyAsBitmapTSMI = new System.Windows.Forms.ToolStripMenuItem();
+			this.pasteTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -125,6 +125,13 @@
 			this.copyTSMI.Text = "Copy";
 			this.copyTSMI.Click += new System.EventHandler(this.OnEditCopy);
 			// 
+			// copyAsBitmapTSMI
+			// 
+			this.copyAsBitmapTSMI.Name = "copyAsBitmapTSMI";
+			this.copyAsBitmapTSMI.Size = new System.Drawing.Size(182, 24);
+			this.copyAsBitmapTSMI.Text = "Copy as Bitmap";
+			this.copyAsBitmapTSMI.Click += new System.EventHandler(this.OnEditCopyBitmap);
+			// 
 			// pasteTSMI
 			// 
 			this.pasteTSMI.Name = "pasteTSMI";
@@ -132,13 +139,6 @@
 			this.pasteTSMI.Size = new System.Drawing.Size(182, 24);
 			this.pasteTSMI.Text = "Paste";
 			this.pasteTSMI.Click += new System.EventHandler(this.OnEditPaste);
-			// 
-			// copyAsBitmapTSMI
-			// 
-			this.copyAsBitmapTSMI.Name = "copyAsBitmapTSMI";
-			this.copyAsBitmapTSMI.Size = new System.Drawing.Size(182, 24);
-			this.copyAsBitmapTSMI.Text = "Copy as Bitmap";
-			this.copyAsBitmapTSMI.Click += new System.EventHandler(this.OnEditCopyBitmap);
 			// 
 			// deleteTSMI
 			// 

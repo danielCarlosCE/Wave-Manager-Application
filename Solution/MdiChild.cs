@@ -56,6 +56,7 @@ namespace WaveManagerApp
 				// Scrolling
 				AutoScrollMinSize = new Size(_wave.NumberOfSamples, Wave.MaxSampleValue);
 				g.TranslateTransform(AutoScrollPosition.X, AutoScrollPosition.Y);
+
 			}
 			else
 			{
@@ -63,6 +64,8 @@ namespace WaveManagerApp
 				float xScaleFactor = (float)ClientRectangle.Width / _wave.NumberOfSamples;
 				float yScaleFactor = (float)ClientRectangle.Height / Wave.MaxSampleValue;
 				g.ScaleTransform(xScaleFactor, yScaleFactor);
+				AutoScrollMinSize = new Size(0, 0);
+
 			}
 			for (int i = 0; i < _wave.NumberOfSamples - 1; i++)
 			{

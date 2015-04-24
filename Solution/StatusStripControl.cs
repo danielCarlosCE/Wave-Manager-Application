@@ -29,6 +29,13 @@ namespace WaveManagerApp
 		public StatusStripControl()
 		{
 			InitializeComponent();
+			Log.errorEvent += OnErrorEvent;
+		}
+
+		void OnErrorEvent(string message)
+		{
+			int i = _errorListBox.Items.Add(message);
+			_errorListBox.SelectedIndex = i;
 		}
 
 		#endregion

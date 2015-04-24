@@ -57,6 +57,7 @@
     <Compile Include="FileViewControl.Designer.cs">
       <DependentUpon>FileViewControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Log.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

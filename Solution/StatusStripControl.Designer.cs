@@ -29,25 +29,26 @@
 		private void InitializeComponent()
 		{
 			this._tlpMain = new System.Windows.Forms.TableLayoutPanel();
-			this._lblKeys = new System.Windows.Forms.Label();
-			this._cbxStatus = new System.Windows.Forms.ComboBox();
-			this._lblGroups = new System.Windows.Forms.Label();
-			this.clockControl1 = new WaveManagerApp.ClockControl();
+			this.samplesCount = new System.Windows.Forms.Label();
+			this._errorListBox = new System.Windows.Forms.ComboBox();
+			this.wavesCount = new System.Windows.Forms.Label();
+			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this._tlpMain.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// _tlpMain
 			// 
 			this._tlpMain.BackColor = System.Drawing.Color.SteelBlue;
 			this._tlpMain.ColumnCount = 4;
-			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-			this._tlpMain.Controls.Add(this._lblKeys, 2, 0);
-			this._tlpMain.Controls.Add(this._cbxStatus, 0, 0);
-			this._tlpMain.Controls.Add(this._lblGroups, 1, 0);
-			this._tlpMain.Controls.Add(this.clockControl1, 3, 0);
+			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 38.56976F));
+			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 11.37163F));
+			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this._tlpMain.Controls.Add(this.samplesCount, 2, 0);
+			this._tlpMain.Controls.Add(this._errorListBox, 0, 0);
+			this._tlpMain.Controls.Add(this.wavesCount, 1, 0);
+			this._tlpMain.Controls.Add(this.trackBar1, 3, 0);
 			this._tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._tlpMain.Location = new System.Drawing.Point(0, 0);
 			this._tlpMain.Margin = new System.Windows.Forms.Padding(4);
@@ -57,49 +58,47 @@
 			this._tlpMain.Size = new System.Drawing.Size(853, 32);
 			this._tlpMain.TabIndex = 0;
 			// 
-			// _lblKeys
+			// samplesCount
 			// 
-			this._lblKeys.AutoSize = true;
-			this._lblKeys.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._lblKeys.ForeColor = System.Drawing.Color.White;
-			this._lblKeys.Location = new System.Drawing.Point(515, 0);
-			this._lblKeys.Name = "_lblKeys";
-			this._lblKeys.Size = new System.Drawing.Size(126, 32);
-			this._lblKeys.TabIndex = 2;
-			this._lblKeys.Text = "x of y selected keys";
-			this._lblKeys.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.samplesCount.AutoSize = true;
+			this.samplesCount.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.samplesCount.ForeColor = System.Drawing.Color.White;
+			this.samplesCount.Location = new System.Drawing.Point(429, 0);
+			this.samplesCount.Name = "samplesCount";
+			this.samplesCount.Size = new System.Drawing.Size(207, 32);
+			this.samplesCount.TabIndex = 2;
+			this.samplesCount.Text = "Samples: 0";
+			this.samplesCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// _cbxStatus
+			// _errorListBox
 			// 
-			this._cbxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._cbxStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._cbxStatus.FormattingEnabled = true;
-			this._cbxStatus.Location = new System.Drawing.Point(3, 3);
-			this._cbxStatus.Name = "_cbxStatus";
-			this._cbxStatus.Size = new System.Drawing.Size(414, 25);
-			this._cbxStatus.TabIndex = 0;
+			this._errorListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._errorListBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._errorListBox.FormattingEnabled = true;
+			this._errorListBox.Location = new System.Drawing.Point(3, 3);
+			this._errorListBox.Name = "_errorListBox";
+			this._errorListBox.Size = new System.Drawing.Size(323, 25);
+			this._errorListBox.TabIndex = 0;
 			// 
-			// _lblGroups
+			// wavesCount
 			// 
-			this._lblGroups.AutoSize = true;
-			this._lblGroups.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._lblGroups.ForeColor = System.Drawing.Color.White;
-			this._lblGroups.Location = new System.Drawing.Point(423, 0);
-			this._lblGroups.Name = "_lblGroups";
-			this._lblGroups.Size = new System.Drawing.Size(86, 32);
-			this._lblGroups.TabIndex = 1;
-			this._lblGroups.Text = "Total Groups";
-			this._lblGroups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.wavesCount.AutoSize = true;
+			this.wavesCount.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.wavesCount.ForeColor = System.Drawing.Color.White;
+			this.wavesCount.Location = new System.Drawing.Point(332, 0);
+			this.wavesCount.Name = "wavesCount";
+			this.wavesCount.Size = new System.Drawing.Size(91, 32);
+			this.wavesCount.TabIndex = 1;
+			this.wavesCount.Text = "Waves: 0";
+			this.wavesCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// clockControl1
+			// trackBar1
 			// 
-			this.clockControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.clockControl1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.clockControl1.Location = new System.Drawing.Point(648, 4);
-			this.clockControl1.Margin = new System.Windows.Forms.Padding(4);
-			this.clockControl1.Name = "clockControl1";
-			this.clockControl1.Size = new System.Drawing.Size(201, 24);
-			this.clockControl1.TabIndex = 3;
+			this.trackBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.trackBar1.Location = new System.Drawing.Point(642, 3);
+			this.trackBar1.Name = "trackBar1";
+			this.trackBar1.Size = new System.Drawing.Size(208, 26);
+			this.trackBar1.TabIndex = 3;
 			// 
 			// StatusStripControl
 			// 
@@ -112,6 +111,7 @@
 			this.Size = new System.Drawing.Size(853, 32);
 			this._tlpMain.ResumeLayout(false);
 			this._tlpMain.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -119,9 +119,9 @@
 		#endregion
 
 		private System.Windows.Forms.TableLayoutPanel _tlpMain;
-		private System.Windows.Forms.Label _lblKeys;
-		private System.Windows.Forms.ComboBox _cbxStatus;
-		private System.Windows.Forms.Label _lblGroups;
-		private ClockControl clockControl1;
+		private System.Windows.Forms.ComboBox _errorListBox;
+		private System.Windows.Forms.TrackBar trackBar1;
+		public System.Windows.Forms.Label wavesCount;
+		public System.Windows.Forms.Label samplesCount;
 	}
 }
