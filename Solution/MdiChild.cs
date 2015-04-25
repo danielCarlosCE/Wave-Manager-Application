@@ -67,9 +67,10 @@ namespace WaveManagerApp
 				AutoScrollMinSize = new Size(0, 0);
 
 			}
+			BackColor = Preferences.WaveBgColor;
 			for (int i = 0; i < _wave.NumberOfSamples - 1; i++)
 			{
-				g.DrawLine(Pens.Red, i, _wave.Samples[i], i + 1, _wave.Samples[i + 1]);
+				g.DrawLine(Preferences.PenForWave(), i, _wave.Samples[i], i + 1, _wave.Samples[i + 1]);
 			}
 		}
 
@@ -201,7 +202,7 @@ namespace WaveManagerApp
 				int y1 = Wave.Samples[i];
 				int y2 = Wave.Samples[i + 1];
 
-				g.DrawLine(Pens.Red, i, y1, i + 1, y2);
+				g.DrawLine(new Pen(Preferences.WaveColor), i, y1, i + 1, y2);
 			}
 
 		}

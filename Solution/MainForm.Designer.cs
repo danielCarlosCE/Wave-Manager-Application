@@ -49,6 +49,14 @@
 			this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.statusBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.formatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.thicknessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +85,7 @@
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.fileViewControl1 = new WaveManagerApp.FileViewControl();
 			this.statusStripControl = new WaveManagerApp.StatusStripControl();
-			this.statusBarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.backgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.toolStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -90,6 +98,7 @@
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.viewToolStripMenuItem,
+            this.formatToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this._windowMenu,
             this.helpToolStripMenuItem});
@@ -250,9 +259,72 @@
 			// toolBarToolStripMenuItem
 			// 
 			this.toolBarToolStripMenuItem.Name = "toolBarToolStripMenuItem";
-			this.toolBarToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+			this.toolBarToolStripMenuItem.Size = new System.Drawing.Size(140, 24);
 			this.toolBarToolStripMenuItem.Text = "ToolBar";
 			this.toolBarToolStripMenuItem.Click += new System.EventHandler(this.OnViewToolBar);
+			// 
+			// statusBarToolStripMenuItem
+			// 
+			this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
+			this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(140, 24);
+			this.statusBarToolStripMenuItem.Text = "StatusBar";
+			this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.OnViewStatusBar);
+			// 
+			// formatToolStripMenuItem
+			// 
+			this.formatToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.colorToolStripMenuItem,
+            this.thicknessToolStripMenuItem,
+            this.backgroundToolStripMenuItem});
+			this.formatToolStripMenuItem.Name = "formatToolStripMenuItem";
+			this.formatToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
+			this.formatToolStripMenuItem.Text = "Format";
+			// 
+			// colorToolStripMenuItem
+			// 
+			this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
+			this.colorToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+			this.colorToolStripMenuItem.Text = "Color";
+			this.colorToolStripMenuItem.Click += new System.EventHandler(this.OnFormatColor);
+			// 
+			// thicknessToolStripMenuItem
+			// 
+			this.thicknessToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem4,
+            this.toolStripMenuItem5,
+            this.toolStripMenuItem6,
+            this.toolStripMenuItem7});
+			this.thicknessToolStripMenuItem.Name = "thicknessToolStripMenuItem";
+			this.thicknessToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+			this.thicknessToolStripMenuItem.Text = "Thickness";
+			// 
+			// toolStripMenuItem4
+			// 
+			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(86, 24);
+			this.toolStripMenuItem4.Text = "1";
+			this.toolStripMenuItem4.Click += new System.EventHandler(this.OnFormatThickness);
+			// 
+			// toolStripMenuItem5
+			// 
+			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+			this.toolStripMenuItem5.Size = new System.Drawing.Size(86, 24);
+			this.toolStripMenuItem5.Text = "2";
+			this.toolStripMenuItem5.Click += new System.EventHandler(this.OnFormatThickness);
+			// 
+			// toolStripMenuItem6
+			// 
+			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+			this.toolStripMenuItem6.Size = new System.Drawing.Size(86, 24);
+			this.toolStripMenuItem6.Text = "4";
+			this.toolStripMenuItem6.Click += new System.EventHandler(this.OnFormatThickness);
+			// 
+			// toolStripMenuItem7
+			// 
+			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+			this.toolStripMenuItem7.Size = new System.Drawing.Size(86, 24);
+			this.toolStripMenuItem7.Text = "8";
+			this.toolStripMenuItem7.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
 			// toolsToolStripMenuItem
 			// 
@@ -487,12 +559,12 @@
 			this.statusStripControl.Size = new System.Drawing.Size(843, 32);
 			this.statusStripControl.TabIndex = 2;
 			// 
-			// statusBarToolStripMenuItem
+			// backgroundToolStripMenuItem
 			// 
-			this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-			this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
-			this.statusBarToolStripMenuItem.Text = "StatusBar";
-			this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.OnViewStatusBar);
+			this.backgroundToolStripMenuItem.Name = "backgroundToolStripMenuItem";
+			this.backgroundToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+			this.backgroundToolStripMenuItem.Text = "Background";
+			this.backgroundToolStripMenuItem.Click += new System.EventHandler(this.OnFormatBackground);
 			// 
 			// MainForm
 			// 
@@ -577,6 +649,14 @@
 		private System.Windows.Forms.Splitter splitter1;
 		private System.Windows.Forms.ToolStripMenuItem pageSetupToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem statusBarToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem formatToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem thicknessToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+		private System.Windows.Forms.ToolStripMenuItem backgroundToolStripMenuItem;
 
 	}
 }

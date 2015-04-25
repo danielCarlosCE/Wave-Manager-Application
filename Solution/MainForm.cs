@@ -181,13 +181,12 @@ namespace WaveManagerApp
 			}
 
 
-			Console.Write("count:" + count + "end:" + end);
 			int x1 = 0;
 			for (int i = count; i < end - 1; i++, x1++)
 			{
 				int y1 = active.Wave.Samples[i];
 				int y2 = active.Wave.Samples[i + 1];
-				e.Graphics.DrawLine(Pens.Red, x1, y1, x1 + 1, y2);
+				e.Graphics.DrawLine(Preferences.PenForWave(), x1, y1, x1 + 1, y2);
 			}
 			if (!active.IsNormal)
 			{
@@ -335,7 +334,7 @@ namespace WaveManagerApp
 				int  y1 = active.Wave.Samples[i];
 				int  y2 = active.Wave.Samples[i + 1] ;
 				
-				g.DrawLine(Pens.Red, i, y1, i+1, y2);
+				g.DrawLine(Preferences.PenForWave(), i, y1, i+1, y2);
 			}
 			
 		}
@@ -390,6 +389,47 @@ namespace WaveManagerApp
 		private void OnViewStatusBar(object sender, EventArgs e)
 		{
 			statusStripControl.Visible = !statusStripControl.Visible;
+		}
+
+		private void OnFormatColor(object sender, EventArgs e)
+		{
+			Preferences.WaveColor = ChangeColorWithDialog(Preferences.WaveColor);
+			InvalidadeChildren();
+		}
+
+		private void InvalidadeChildren()
+		{
+			foreach (Form f in MdiChildren)
+			{
+				MdiChild active = (MdiChild)f;
+				active.Invalidate();
+			}
+		}
+
+		private Color ChangeColorWithDialog(Color defaultValue)
+		{
+			ColorDialog colorDialog = new ColorDialog();
+			colorDialog.Color = defaultValue;
+			DialogResult result = colorDialog.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				return  colorDialog.Color;
+			}
+			return defaultValue;
+			
+		}
+
+		private void OnFormatThickness(object sender, EventArgs e)
+		{
+			Preferences.Thickness = float.Parse(((ToolStripMenuItem)sender).Text);
+			InvalidadeChildren();
+			
+		}
+
+		private void OnFormatBackground(object sender, EventArgs e)
+		{
+			Preferences.WaveBgColor = ChangeColorWithDialog(Preferences.WaveBgColor);
+			InvalidadeChildren();
 		}
 
 		
