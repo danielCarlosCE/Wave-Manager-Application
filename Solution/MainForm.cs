@@ -20,6 +20,15 @@ namespace WaveManagerApp
 		private PrintDocument _printDoc = new PrintDocument();
 		private int count = 0;
 
+		public MdiChild ActiveChild
+		{
+			get
+			{
+				MdiChild active = (MdiChild)this.ActiveMdiChild;
+				return active;
+			}
+		}
+
 
 		public MainForm()
 		{
@@ -50,13 +59,13 @@ namespace WaveManagerApp
 
 		private void OnFileSave(object sender, EventArgs e)
 		{
-			SaveWave();
+			ActiveChild.SaveWave();
 			
 		}
 
 		private void OnFileSaveAs(object sender, EventArgs e)
 		{
-			SaveWaveAs();
+			ActiveChild.SaveWaveAs();
 		}
 
 		private void OnFileCloseAll(object sender, EventArgs e)
@@ -70,8 +79,7 @@ namespace WaveManagerApp
 
 		private void OnFileClose(object sender, EventArgs e)
 		{
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
-			CloseChild(active);
+			CloseChild(ActiveChild);
 			
 		}
 
@@ -154,28 +162,26 @@ namespace WaveManagerApp
 			LaunchWaveChild(new string[]{fileName});
 		}
 		private void OnIdle(object sender, EventArgs e) {
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
-			saveTSMI.Enabled = active!=null && active.Wave != null && active.Modified;
-			saveAsTSMI.Enabled = active != null && active.Wave != null;
+			saveTSMI.Enabled = ActiveChild != null && ActiveChild.Wave != null && ActiveChild.Modified;
+			saveAsTSMI.Enabled = ActiveChild != null && ActiveChild.Wave != null;
 			statusStripControl.wavesCount.Text = "Waves: "+MdiChildren.Length;
-			statusStripControl.samplesCount.Text ="Samples: " +( active==null || active.Wave ==null ? 0 :  active.Wave.NumberOfSamples);
+			statusStripControl.samplesCount.Text = "Samples: " + (ActiveChild == null || ActiveChild.Wave == null ? 0 : ActiveChild.Wave.NumberOfSamples);
 
 		}
 		private void OnPrintPage(object sender, PrintPageEventArgs e)
 		{
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
 
 			int end = count + e.PageBounds.Width;
 
-			if (end > active.Wave.NumberOfSamples || !active.IsNormal)
+			if (end > ActiveChild.Wave.NumberOfSamples || !ActiveChild.IsNormal)
 			{
-				end = active.Wave.NumberOfSamples;
+				end = ActiveChild.Wave.NumberOfSamples;
 			}
-			
-			if (!active.IsNormal)
+
+			if (!ActiveChild.IsNormal)
 			{
 				// Zooming
-				float xScaleFactor = (float)e.PageBounds.Width / active.Wave.NumberOfSamples;
+				float xScaleFactor = (float)e.PageBounds.Width / ActiveChild.Wave.NumberOfSamples;
 				float yScaleFactor = (float)e.PageBounds.Height / Wave.MaxSampleValue;
 				e.Graphics.ScaleTransform(xScaleFactor, yScaleFactor);
 			}
@@ -184,16 +190,16 @@ namespace WaveManagerApp
 			int x1 = 0;
 			for (int i = count; i < end - 1; i++, x1++)
 			{
-				int y1 = active.Wave.Samples[i];
-				int y2 = active.Wave.Samples[i + 1];
+				int y1 = ActiveChild.Wave.Samples[i];
+				int y2 = ActiveChild.Wave.Samples[i + 1];
 				e.Graphics.DrawLine(Preferences.PenForWave(), x1, y1, x1 + 1, y2);
 			}
-			if (!active.IsNormal)
+			if (!ActiveChild.IsNormal)
 			{
 				e.HasMorePages = false;
 				return;
 			}
-			if (end >= active.Wave.NumberOfSamples)
+			if (end >= ActiveChild.Wave.NumberOfSamples)
 			{
 				e.HasMorePages = false;
 				count = 0;
@@ -217,6 +223,10 @@ namespace WaveManagerApp
 		{
 			LayoutMdi(MdiLayout.TileVertical);
 		}
+		private void OnWindowCascade(object sender, EventArgs e)
+		{
+			LayoutMdi(MdiLayout.Cascade);
+		}
 
 		private void LaunchWaveChild(string[] fileNames)
 		{
@@ -234,7 +244,7 @@ namespace WaveManagerApp
 				catch (Exception e)
 				{
 					MessageBox.Show("Invalid wave file.");
-					Log.error("Invalid wave file.");
+					Log.error(e.Message);
 					return;
 				}
 				MdiChild c = new MdiChild();
@@ -254,96 +264,12 @@ namespace WaveManagerApp
 
 		}
 
-		private bool SaveWave()
-		{
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
-			if (!File.Exists(active.Text))
-			{
-				return SaveWaveAs();
-
-			}
-			return WaveMgr.Save(active.Wave, active.Text);
-		}
-
-		private bool SaveWaveAs()
-		{
-			SaveFileDialog saveDialog = new SaveFileDialog();
-			saveDialog.Filter = _filterSave;
-
-			using (saveDialog)
-			{
-				if (saveDialog.ShowDialog() == DialogResult.OK)
-				{
-					if (Path.GetExtension(saveDialog.FileName).ToLower() == PngExtension)
-					{
-						return SaveAsPNG(saveDialog.FileName);
-					}
-					else
-					{
-						MdiChild active = (MdiChild)this.ActiveMdiChild;
-						return WaveMgr.Save(active.Wave, saveDialog.FileName);
-					}
-				}
-				return false;
-			}
-		}
-
-		private bool SaveAsPNG(string fileName)
-		{
-			try
-			{
-				MdiChild active = (MdiChild)this.ActiveMdiChild;
-				int width = active.IsNormal ? active.Wave.NumberOfSamples : ClientRectangle.Width;
-				int height = active.IsNormal ? Wave.MaxSampleValue : ClientRectangle.Height;
-
-				Image newBitmap = new Bitmap(width, height, CreateGraphics());
-				Graphics memryGraphics = Graphics.FromImage(newBitmap);
-				paintDraw(memryGraphics);
-				newBitmap.Save(fileName, ImageFormat.Png);
-				return true;
-			}
-			catch (Exception e)
-			{
-				return false;
-			}
-		}
-
-		private void paintDraw(Graphics g)
-		{
-			MdiChild active = (MdiChild)this.ActiveMdiChild;
-
-			if (active == null || active.Wave == null)
-				return;
-
-			if (active.IsNormal)
-			{
-				g.TranslateTransform(AutoScrollPosition.X, AutoScrollPosition.Y);
-			}
-			else
-			{
-				// Zooming
-				float xScaleFactor = (float)ClientRectangle.Width / active.Wave.NumberOfSamples;
-				float yScaleFactor = (float)ClientRectangle.Height / Wave.MaxSampleValue;
-				g.ScaleTransform(xScaleFactor, yScaleFactor);
-			}
-
-
-		
-			for (int i = 0; i < active.Wave.NumberOfSamples-1; i++)
-			{
-				int  y1 = active.Wave.Samples[i];
-				int  y2 = active.Wave.Samples[i + 1] ;
-				
-				g.DrawLine(Preferences.PenForWave(), i, y1, i+1, y2);
-			}
-			
-		}
 
 		private void CloseChild(MdiChild child)
 		{
 			if (child.Modified)
 			{
-				if (CheckIfWantSaveChanges())
+				if (ActiveChild.CheckIfWantSaveChanges(true))
 				{
 					child.Close();
 				}
@@ -354,32 +280,7 @@ namespace WaveManagerApp
 		}
 
 		/** Return false when user clicks Cancel button*/
-		private bool CheckIfWantSaveChanges()
-		{
-			if (!saveToolStripButton.Enabled)
-				return true;
-
-			SaveForm saveform = new SaveForm();
-			using (saveform)
-			{
-
-				DialogResult dialogResult = saveform.ShowDialog();
-
-				if (dialogResult == DialogResult.Yes)
-				{
-					return SaveWave();
-				}
-				else if (dialogResult == DialogResult.No)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-
-		}
+		
 
 		private void OnViewToolBar(object sender, EventArgs e)
 		{
@@ -401,8 +302,7 @@ namespace WaveManagerApp
 		{
 			foreach (Form f in MdiChildren)
 			{
-				MdiChild active = (MdiChild)f;
-				active.Invalidate();
+				ActiveChild.Invalidate();
 			}
 		}
 

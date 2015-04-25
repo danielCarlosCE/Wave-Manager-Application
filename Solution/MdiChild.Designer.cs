@@ -40,6 +40,10 @@
 			this.copyAsBitmapTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.pasteTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteTSMI = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.modulateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.rotateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -48,7 +52,8 @@
 			this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.toolsToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(706, 28);
@@ -147,6 +152,38 @@
 			this.deleteTSMI.Text = "Delete";
 			this.deleteTSMI.Click += new System.EventHandler(this.OnEditDelete);
 			// 
+			// toolsToolStripMenuItem
+			// 
+			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.playToolStripMenuItem,
+            this.modulateToolStripMenuItem,
+            this.rotateToolStripMenuItem});
+			this.toolsToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
+			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
+			this.toolsToolStripMenuItem.Text = "&Tools";
+			// 
+			// playToolStripMenuItem
+			// 
+			this.playToolStripMenuItem.Name = "playToolStripMenuItem";
+			this.playToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+			this.playToolStripMenuItem.Text = "Play";
+			this.playToolStripMenuItem.Click += new System.EventHandler(this.OnToolsPlay);
+			// 
+			// modulateToolStripMenuItem
+			// 
+			this.modulateToolStripMenuItem.Name = "modulateToolStripMenuItem";
+			this.modulateToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+			this.modulateToolStripMenuItem.Text = "Modulate";
+			this.modulateToolStripMenuItem.Click += new System.EventHandler(this.OnToolsModulate);
+			// 
+			// rotateToolStripMenuItem
+			// 
+			this.rotateToolStripMenuItem.Name = "rotateToolStripMenuItem";
+			this.rotateToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+			this.rotateToolStripMenuItem.Text = "Rotate";
+			this.rotateToolStripMenuItem.Click += new System.EventHandler(this.OnToolsRotate);
+			// 
 			// MdiChild
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -181,6 +218,10 @@
 		private System.Windows.Forms.ToolStripMenuItem copyTSMI;
 		private System.Windows.Forms.ToolStripMenuItem copyAsBitmapTSMI;
 		private System.Windows.Forms.ToolStripMenuItem deleteTSMI;
+		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem playToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem modulateToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem rotateToolStripMenuItem;
 
 	}
 }

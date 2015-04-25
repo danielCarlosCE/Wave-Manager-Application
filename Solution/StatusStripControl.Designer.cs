@@ -32,9 +32,9 @@
 			this.samplesCount = new System.Windows.Forms.Label();
 			this._errorListBox = new System.Windows.Forms.ComboBox();
 			this.wavesCount = new System.Windows.Forms.Label();
-			this.trackBar1 = new System.Windows.Forms.TrackBar();
+			this._trackBar = new System.Windows.Forms.TrackBar();
 			this._tlpMain.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this._trackBar)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// _tlpMain
@@ -48,7 +48,7 @@
 			this._tlpMain.Controls.Add(this.samplesCount, 2, 0);
 			this._tlpMain.Controls.Add(this._errorListBox, 0, 0);
 			this._tlpMain.Controls.Add(this.wavesCount, 1, 0);
-			this._tlpMain.Controls.Add(this.trackBar1, 3, 0);
+			this._tlpMain.Controls.Add(this._trackBar, 3, 0);
 			this._tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._tlpMain.Location = new System.Drawing.Point(0, 0);
 			this._tlpMain.Margin = new System.Windows.Forms.Padding(4);
@@ -92,13 +92,14 @@
 			this.wavesCount.Text = "Waves: 0";
 			this.wavesCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// trackBar1
+			// _trackBar
 			// 
-			this.trackBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.trackBar1.Location = new System.Drawing.Point(642, 3);
-			this.trackBar1.Name = "trackBar1";
-			this.trackBar1.Size = new System.Drawing.Size(208, 26);
-			this.trackBar1.TabIndex = 3;
+			this._trackBar.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._trackBar.Location = new System.Drawing.Point(642, 3);
+			this._trackBar.Name = "_trackBar";
+			this._trackBar.Size = new System.Drawing.Size(208, 26);
+			this._trackBar.TabIndex = 3;
+			this._trackBar.ValueChanged += new System.EventHandler(this.OnTrackBarValueChanged);
 			// 
 			// StatusStripControl
 			// 
@@ -109,9 +110,10 @@
 			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "StatusStripControl";
 			this.Size = new System.Drawing.Size(853, 32);
+			this.Load += new System.EventHandler(this.OnLoad);
 			this._tlpMain.ResumeLayout(false);
 			this._tlpMain.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this._trackBar)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -120,7 +122,7 @@
 
 		private System.Windows.Forms.TableLayoutPanel _tlpMain;
 		private System.Windows.Forms.ComboBox _errorListBox;
-		private System.Windows.Forms.TrackBar trackBar1;
+		private System.Windows.Forms.TrackBar _trackBar;
 		public System.Windows.Forms.Label wavesCount;
 		public System.Windows.Forms.Label samplesCount;
 	}

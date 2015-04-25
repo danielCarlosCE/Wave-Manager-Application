@@ -57,9 +57,8 @@
 			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+			this.backgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._windowMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.tileHorizontallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tileVerticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,7 +84,6 @@
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.fileViewControl1 = new WaveManagerApp.FileViewControl();
 			this.statusStripControl = new WaveManagerApp.StatusStripControl();
-			this.backgroundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.toolStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -326,26 +324,18 @@
 			this.toolStripMenuItem7.Text = "8";
 			this.toolStripMenuItem7.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
+			// backgroundToolStripMenuItem
+			// 
+			this.backgroundToolStripMenuItem.Name = "backgroundToolStripMenuItem";
+			this.backgroundToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+			this.backgroundToolStripMenuItem.Text = "Background";
+			this.backgroundToolStripMenuItem.Click += new System.EventHandler(this.OnFormatBackground);
+			// 
 			// toolsToolStripMenuItem
 			// 
-			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.customizeToolStripMenuItem,
-            this.optionsToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
 			this.toolsToolStripMenuItem.Text = "&Tools";
-			// 
-			// customizeToolStripMenuItem
-			// 
-			this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-			this.customizeToolStripMenuItem.Size = new System.Drawing.Size(147, 24);
-			this.customizeToolStripMenuItem.Text = "&Customize";
-			// 
-			// optionsToolStripMenuItem
-			// 
-			this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-			this.optionsToolStripMenuItem.Size = new System.Drawing.Size(147, 24);
-			this.optionsToolStripMenuItem.Text = "&Options";
 			// 
 			// _windowMenu
 			// 
@@ -377,6 +367,7 @@
 			this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
 			this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(187, 24);
 			this.cascadeToolStripMenuItem.Text = "Cascade";
+			this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.OnWindowCascade);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -559,13 +550,6 @@
 			this.statusStripControl.Size = new System.Drawing.Size(843, 32);
 			this.statusStripControl.TabIndex = 2;
 			// 
-			// backgroundToolStripMenuItem
-			// 
-			this.backgroundToolStripMenuItem.Name = "backgroundToolStripMenuItem";
-			this.backgroundToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
-			this.backgroundToolStripMenuItem.Text = "Background";
-			this.backgroundToolStripMenuItem.Click += new System.EventHandler(this.OnFormatBackground);
-			// 
 			// MainForm
 			// 
 			this.AllowDrop = true;
@@ -615,8 +599,6 @@
 		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem customizeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem indexToolStripMenuItem;
