@@ -32,6 +32,7 @@ namespace WaveManagerApp
 
 		public MainForm()
 		{
+			Preferences.LoadPreferences();
 			InitializeComponent();
 		}
 
@@ -125,6 +126,7 @@ namespace WaveManagerApp
 			FileViewControl.DoubleClickEvent += OnFileViewControlDoubleClick;
 			Application.Idle += OnIdle;
 			_printDoc.PrintPage += OnPrintPage;
+			
 		}
 
 		private void OnDragEnter(object sender, DragEventArgs e)
@@ -162,7 +164,7 @@ namespace WaveManagerApp
 			LaunchWaveChild(new string[]{fileName});
 		}
 		private void OnIdle(object sender, EventArgs e) {
-			saveTSMI.Enabled = ActiveChild != null && ActiveChild.Wave != null && ActiveChild.Modified;
+			saveTSMI.Enabled = ActiveChild != null && ActiveChild.Wave != null && !ActiveChild.HasJustSaved;
 			saveAsTSMI.Enabled = ActiveChild != null && ActiveChild.Wave != null;
 			statusStripControl.wavesCount.Text = "Waves: "+MdiChildren.Length;
 			statusStripControl.samplesCount.Text = "Samples: " + (ActiveChild == null || ActiveChild.Wave == null ? 0 : ActiveChild.Wave.NumberOfSamples);
@@ -279,7 +281,6 @@ namespace WaveManagerApp
 			child.Close();
 		}
 
-		/** Return false when user clicks Cancel button*/
 		
 
 		private void OnViewToolBar(object sender, EventArgs e)
@@ -292,13 +293,9 @@ namespace WaveManagerApp
 			statusStripControl.Visible = !statusStripControl.Visible;
 		}
 
-		private void OnFormatColor(object sender, EventArgs e)
-		{
-			Preferences.WaveColor = ChangeColorWithDialog(Preferences.WaveColor);
-			InvalidadeChildren();
-		}
+		
 
-		private void InvalidadeChildren()
+		public void InvalidadeChildren()
 		{
 			foreach (Form f in MdiChildren)
 			{
@@ -319,17 +316,34 @@ namespace WaveManagerApp
 			
 		}
 
-		private void OnFormatThickness(object sender, EventArgs e)
+		public void OnFormatColor(object sender, EventArgs e)
+		{
+			Preferences.WaveColor = ChangeColorWithDialog(Preferences.WaveColor);
+			InvalidadeChildren();
+		}
+
+		public void OnFormatThickness(object sender, EventArgs e)
 		{
 			Preferences.Thickness = float.Parse(((ToolStripMenuItem)sender).Text);
 			InvalidadeChildren();
 			
 		}
 
-		private void OnFormatBackground(object sender, EventArgs e)
+		public void OnFormatBackground(object sender, EventArgs e)
 		{
 			Preferences.WaveBgColor = ChangeColorWithDialog(Preferences.WaveBgColor);
 			InvalidadeChildren();
+		}
+
+		private void OnHelpAbout(object sender, EventArgs e)
+		{
+			new HelpForm().ShowDialog();
+		}
+
+		private void OnFormClosing(object sender, FormClosingEventArgs e)
+		{
+			Preferences.Directories = fileViewControl1.GetDirectories();
+			Preferences.PersistPreferences(); 
 		}
 
 		

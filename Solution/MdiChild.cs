@@ -23,12 +23,18 @@ namespace WaveManagerApp
 		private Wave _oldWave = null;
 		private bool _modified = false;
 		private bool _redoUsed = false;
-		private bool _undoUsed = false; 
+		private bool _undoUsed = false;
+		private bool _hasJustSaved = false;
 		
 		public bool Modified
 		{
 			get { return _modified; }
 			set { _modified = value; }
+		}
+		public bool HasJustSaved
+		{
+			get { return _hasJustSaved; }
+			set { _hasJustSaved = value; }
 		}
 		public bool IsNormal
 		{
@@ -39,6 +45,10 @@ namespace WaveManagerApp
 		{
 			get { return _wave; }
 			set { _wave = value; }
+		}
+		public MainForm MainForm
+		{
+			get { return (MainForm)MdiParent; }
 		}
 		#endregion
 	
@@ -182,22 +192,27 @@ namespace WaveManagerApp
 		
 		private void WillModify()
 		{
-			_oldWave = _wave;
+			_oldWave = Wave.CopyWave(_wave);
 			_modified = true;
+			_hasJustSaved = false;
 			if (_undoUsed) _undoUsed = false;
 		}
 
 
 		private Wave WaveFromClipBoard()
 		{
-			return (Wave) Clipboard.GetData(Wave.DataObject);
+			
+			return (Wave)Clipboard.GetData(Wave.DataObject);
+			
 		}
 	
 		private void UndoRedo()
 		{
-			Wave temp = _wave;
+			Wave temp = Wave.CopyWave(_wave);
 			_wave = _oldWave;
 			_oldWave = temp;
+			_modified = true;
+			_hasJustSaved = false;
 			Invalidate();
 		}
 
@@ -250,7 +265,15 @@ namespace WaveManagerApp
 				return SaveWaveAs();
 
 			}
-			return WaveMgr.Save(Wave, Text);
+			if (WaveMgr.Save(Wave, Text))
+			{
+				HasJustSaved = true;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public bool SaveWaveAs()
@@ -269,7 +292,15 @@ namespace WaveManagerApp
 					else
 					{
 						MdiChild active = (MdiChild)this.ActiveMdiChild;
-						return WaveMgr.Save(Wave, saveDialog.FileName);
+						if (WaveMgr.Save(Wave, saveDialog.FileName))
+						{
+							HasJustSaved = true;
+							return true;
+						}
+						else
+						{
+							return false;
+						}
 					}
 				}
 				return false;
@@ -335,6 +366,33 @@ namespace WaveManagerApp
 			Invalidate();
 		}
 
+		public void OnFormatColor(object sender, EventArgs e)
+		{
+			MainForm.OnFormatColor(sender,e);
+		}
+
+		public void OnFormatThickness(object sender, EventArgs e)
+		{
+			MainForm.OnFormatThickness(sender, e);
+		}
+
+		public void OnFormatBackground(object sender, EventArgs e)
+		{
+			MainForm.OnFormatBackground(sender, e);
+		}
+
+		private Color ChangeColorWithDialog(Color defaultValue)
+		{
+			ColorDialog colorDialog = new ColorDialog();
+			colorDialog.Color = defaultValue;
+			DialogResult result = colorDialog.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				return colorDialog.Color;
+			}
+			return defaultValue;
+
+		}
 
 	
 	}

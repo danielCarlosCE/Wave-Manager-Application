@@ -40,5 +40,20 @@ namespace WaveManagerApp
 			set { _samples = value; }
 		}
 
+		public static Wave CopyWave(Wave wave)
+		{
+			Wave newWave = new Wave();
+			newWave.Header = wave.Header;
+			newWave.NumberOfSamples = wave.NumberOfSamples;
+			newWave.FileName = wave.FileName;
+			newWave.Samples = new byte[wave.NumberOfSamples];
+			for (int i = 0; i < wave.Samples.Length; i++ )
+			{
+				newWave.Samples[i] = wave.Samples[i];
+			}
+			return newWave;
+
+		}
+
 	}
 }

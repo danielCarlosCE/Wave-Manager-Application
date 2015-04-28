@@ -50,7 +50,6 @@ namespace WaveManagerApp
 			_trackBar.Maximum = 50;
 			_trackBar.TickFrequency = 5;
 			_trackBar.LargeChange = 25;
-			_trackBar.Value = 25;
 			_oldvalue = _trackBar.Value;
 		}
 
