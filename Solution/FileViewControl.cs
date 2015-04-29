@@ -38,10 +38,7 @@ namespace WaveManagerApp
 			Font = Preferences.FileViewFont;
 			treeView1.BackColor = Preferences.FileViewBgColor;
 			treeView1.ForeColor = Preferences.FileViewForeColor;
-			foreach (string directoryName in Preferences.Directories)
-			{
-				AddNode(directoryName);
-			}
+			
 		}
 
 		void OnOpenFile(string fileName)
@@ -189,14 +186,6 @@ namespace WaveManagerApp
 		}
 
 
-		public string[] GetDirectories()
-		{
-			List<string> dirs = new List<string>();
-			foreach (TreeNode tn in treeView1.Nodes)
-			{
-				dirs.Add(tn.Text);
-			}
-			return dirs.ToArray();
-		}
+	
 	}
 }

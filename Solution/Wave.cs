@@ -42,6 +42,10 @@ namespace WaveManagerApp
 
 		public static Wave CopyWave(Wave wave)
 		{
+
+			if (wave == null)
+				return null;
+
 			Wave newWave = new Wave();
 			newWave.Header = wave.Header;
 			newWave.NumberOfSamples = wave.NumberOfSamples;
@@ -52,6 +56,29 @@ namespace WaveManagerApp
 				newWave.Samples[i] = wave.Samples[i];
 			}
 			return newWave;
+
+		}
+
+		public  bool Equals(Wave wave)
+		{
+			if (wave == null)
+				return false;
+			for (int i = 0; i < wave.Header.Length; i++)
+			{
+				if (this.Header[i] != wave.Header[i])
+					return false;
+			}
+			if (this.NumberOfSamples != wave.NumberOfSamples)
+				return false;
+			if(	this.FileName != wave.FileName) 
+				return false;
+			for (int i = 0; i < wave.Samples.Length; i++)
+			{
+				if (this.Samples[i] != wave.Samples[i])
+					return false;
+			}
+
+			return true;
 
 		}
 

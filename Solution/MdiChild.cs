@@ -21,21 +21,17 @@ namespace WaveManagerApp
 		private bool _isNormal = true;
 		private Wave _wave = null;
 		private Wave _oldWave = null;
+		private Wave _original = null;
 		private bool _modified = false;
 		private bool _redoUsed = false;
 		private bool _undoUsed = false;
-		private bool _hasJustSaved = false;
 		
 		public bool Modified
 		{
-			get { return _modified; }
-			set { _modified = value; }
+			get { return _wave != null && !_wave.Equals(_original); }
+		
 		}
-		public bool HasJustSaved
-		{
-			get { return _hasJustSaved; }
-			set { _hasJustSaved = value; }
-		}
+		
 		public bool IsNormal
 		{
 			get { return _isNormal; }
@@ -65,6 +61,7 @@ namespace WaveManagerApp
 		private void OnLoad(object sender, EventArgs e)
 		{
 			Text =  _wave!=null ?  _wave.FileName : "Wave "+_count;
+			_original = (Text.Contains("\\")) ? Wave.CopyWave(_wave) : null;
 			Application.Idle += OnIdle;
 		}
 		#endregion
@@ -73,20 +70,20 @@ namespace WaveManagerApp
 		#region Menu Events
 
 		#region Edit Menu
-		private void OnEditUndo(object sender, EventArgs e)
+		public void OnEditUndo(object sender, EventArgs e)
 		{
 			_undoUsed = true;
 			_redoUsed = false;
 			UndoRedo();
 		}
 
-		private void OnEditRedo(object sender, EventArgs e)
+		public void OnEditRedo(object sender, EventArgs e)
 		{
 			_redoUsed = true;
 			UndoRedo();
 		}
 
-		private void OnEditCut(object sender, EventArgs e)
+		public void OnEditCut(object sender, EventArgs e)
 		{
 			WillModify();
 			DataObject dataObject = new DataObject(Wave.DataObject, _wave);
@@ -95,7 +92,7 @@ namespace WaveManagerApp
 			Invalidate();
 		}
 
-		private void OnEditCopy(object sender, EventArgs e)
+		public void OnEditCopy(object sender, EventArgs e)
 		{
 			DataObject dataObject = new DataObject(Wave.DataObject, _wave);
 			Clipboard.SetDataObject(dataObject, true);
@@ -103,20 +100,20 @@ namespace WaveManagerApp
 			Invalidate();
 		}
 
-		private void OnEditPaste(object sender, EventArgs e)
+		public void OnEditPaste(object sender, EventArgs e)
 		{
-
+			
 			WillModify();
 			_wave = WaveFromClipBoard();
 			Invalidate();
 		}
 
-		private void OnEditCopyBitmap(object sender, EventArgs e)
+		public void OnEditCopyBitmap(object sender, EventArgs e)
 		{
 			Clipboard.SetImage(GenerateBitmap());
 		}
 
-		private void OnEditDelete(object sender, EventArgs e)
+		public void OnEditDelete(object sender, EventArgs e)
 		{
 			WillModify();
 			_wave = null;
@@ -124,16 +121,16 @@ namespace WaveManagerApp
 		}
 		#endregion
 
-		private void OnViewNormal(object sender, EventArgs e)
+		public void OnViewNormal(object sender, EventArgs e)
 		{
 			IsNormal = !IsNormal;
 			Invalidate();
 		}
 
-		private void OnToolsPlay(object sender, EventArgs e)
+		public void OnToolsPlay(object sender, EventArgs e)
 		{
 			if (Wave == null) return;
-			if (_modified ){
+			if (Modified ){
 				if ( !CheckIfWantSaveChanges(false)) return;
 			}
 			System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"" + Text);
@@ -141,27 +138,32 @@ namespace WaveManagerApp
 			
 		}
 
+		private void OnFileSaveAs(object sender, EventArgs e)
+		{
+			SaveWaveAs();
+		}
 
 		#endregion
 
 		#region Other Events
 		private void OnIdle(object sender, EventArgs e)
 		{
+			saveTSMI.Enabled = Modified;
+			saveAsTSMI.Enabled = _wave != null;
 			undoTSMI.Enabled = !_undoUsed && _modified;
 			redoTSMI.Enabled = !_redoUsed && _undoUsed;
-			copyTSMI.Enabled = _wave != null;
-			copyAsBitmapTSMI.Enabled = _wave != null;
-			cutTSMI.Enabled = _wave != null;
-			try { pasteTSMI.Enabled = WaveFromClipBoard() != null;}finally { };
-
+			nornalFullToolStripMenuItem.Enabled =  playToolStripMenuItem.Enabled = rotateToolStripMenuItem.Enabled =	modulateToolStripMenuItem.Enabled
+			= copyTSMI.Enabled = copyAsBitmapTSMI.Enabled = cutTSMI.Enabled = deleteTSMI.Enabled = _wave != null;
+			pasteTSMI.Enabled = WaveFromClipBoard() != null;
 		}
 		private void OnPaint(object sender, PaintEventArgs e)
 		{
-			if (_wave == null)
-				return;
+			
 
 			Graphics g = e.Graphics;
 			g.Clear(Preferences.WaveBgColor);
+			if (_wave == null)
+				return;
 
 			if (_isNormal)
 			{
@@ -192,27 +194,26 @@ namespace WaveManagerApp
 		
 		private void WillModify()
 		{
-			_oldWave = Wave.CopyWave(_wave);
+			
+			_oldWave = (Wave==null)? null : Wave.CopyWave(_wave);
 			_modified = true;
-			_hasJustSaved = false;
 			if (_undoUsed) _undoUsed = false;
 		}
+		
 
-
-		private Wave WaveFromClipBoard()
+		public static Wave WaveFromClipBoard()
 		{
 			
-			return (Wave)Clipboard.GetData(Wave.DataObject);
+			return (Wave) Clipboard.GetData(Wave.DataObject);
 			
 		}
 	
 		private void UndoRedo()
 		{
-			Wave temp = Wave.CopyWave(_wave);
+			Wave temp = (_wave==null)? null : Wave.CopyWave(_wave);
 			_wave = _oldWave;
 			_oldWave = temp;
 			_modified = true;
-			_hasJustSaved = false;
 			Invalidate();
 		}
 
@@ -267,7 +268,7 @@ namespace WaveManagerApp
 			}
 			if (WaveMgr.Save(Wave, Text))
 			{
-				HasJustSaved = true;
+				_original = Wave.CopyWave(_wave);
 				return true;
 			}
 			else
@@ -294,7 +295,8 @@ namespace WaveManagerApp
 						MdiChild active = (MdiChild)this.ActiveMdiChild;
 						if (WaveMgr.Save(Wave, saveDialog.FileName))
 						{
-							HasJustSaved = true;
+							_original = Wave.CopyWave(_wave);
+							Text = saveDialog.FileName;
 							return true;
 						}
 						else
@@ -350,8 +352,9 @@ namespace WaveManagerApp
 
 		}
 
-		private void OnToolsModulate(object sender, EventArgs e)
+		public void OnToolsModulate(object sender, EventArgs e)
 		{
+
 			WillModify();
 			for(int i =0;i<Wave.NumberOfSamples;i++){
 				Wave.Samples[i] = (byte) (Math.Sin(i+3.2f)*20 + Wave.Samples[i]);
@@ -359,7 +362,7 @@ namespace WaveManagerApp
 			Invalidate();
 		}
 
-		private void OnToolsRotate(object sender, EventArgs e)
+		public void OnToolsRotate(object sender, EventArgs e)
 		{
 			WillModify();
 			Array.Reverse(Wave.Samples);
@@ -392,6 +395,11 @@ namespace WaveManagerApp
 			}
 			return defaultValue;
 
+		}
+
+		private void OnFormClosing(object sender, FormClosingEventArgs e)
+		{
+				e.Cancel = !CheckIfWantSaveChanges(true);
 		}
 
 	

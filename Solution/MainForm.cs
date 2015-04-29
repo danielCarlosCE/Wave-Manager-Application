@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
@@ -34,6 +35,9 @@ namespace WaveManagerApp
 		{
 			Preferences.LoadPreferences();
 			InitializeComponent();
+			
+
+			
 		}
 
 		#region FileMenu
@@ -62,11 +66,6 @@ namespace WaveManagerApp
 		{
 			ActiveChild.SaveWave();
 			
-		}
-
-		private void OnFileSaveAs(object sender, EventArgs e)
-		{
-			ActiveChild.SaveWaveAs();
 		}
 
 		private void OnFileCloseAll(object sender, EventArgs e)
@@ -126,6 +125,9 @@ namespace WaveManagerApp
 			FileViewControl.DoubleClickEvent += OnFileViewControlDoubleClick;
 			Application.Idle += OnIdle;
 			_printDoc.PrintPage += OnPrintPage;
+			LaunchWaveChild(Preferences.OpenedWaves);
+			CheckThicknessMenu();
+
 			
 		}
 
@@ -164,11 +166,13 @@ namespace WaveManagerApp
 			LaunchWaveChild(new string[]{fileName});
 		}
 		private void OnIdle(object sender, EventArgs e) {
-			saveTSMI.Enabled = ActiveChild != null && ActiveChild.Wave != null && !ActiveChild.HasJustSaved;
-			saveAsTSMI.Enabled = ActiveChild != null && ActiveChild.Wave != null;
+			
+			saveTSB.Enabled = ActiveChild!=null && ActiveChild.Modified;
+			printTSB.Enabled = ActiveChild != null;
 			statusStripControl.wavesCount.Text = "Waves: "+MdiChildren.Length;
 			statusStripControl.samplesCount.Text = "Samples: " + (ActiveChild == null || ActiveChild.Wave == null ? 0 : ActiveChild.Wave.NumberOfSamples);
-
+			playTSB.Enabled = modulateTSB.Enabled = rotateTSB.Enabled = normalTSB.Enabled = deleteTSB.Enabled = cutTSB.Enabled = copyTSB.Enabled = ActiveChild != null && ActiveChild.Wave != null;
+			pasteTSB.Enabled = MdiChild.WaveFromClipBoard() != null;
 		}
 		private void OnPrintPage(object sender, PrintPageEventArgs e)
 		{
@@ -260,11 +264,7 @@ namespace WaveManagerApp
 			}
 		}
 
-		private void OnTest(object sender, EventArgs e)
-		{
-			System.Drawing.Font f = new System.Drawing.Font("Arial", 14);
-
-		}
+		
 
 
 		private void CloseChild(MdiChild child)
@@ -299,7 +299,7 @@ namespace WaveManagerApp
 		{
 			foreach (Form f in MdiChildren)
 			{
-				ActiveChild.Invalidate();
+				f.Invalidate();
 			}
 		}
 
@@ -324,9 +324,26 @@ namespace WaveManagerApp
 
 		public void OnFormatThickness(object sender, EventArgs e)
 		{
+			
 			Preferences.Thickness = float.Parse(((ToolStripMenuItem)sender).Text);
+			CheckThicknessMenu();
 			InvalidadeChildren();
 			
+		}
+
+		private void CheckThicknessMenu()
+		{
+			foreach (ToolStripMenuItem i in thickTSB.DropDownItems)
+			{
+				if (i.Text == Preferences.Thickness.ToString())
+				{
+					i.CheckState = CheckState.Checked;
+				}
+				else
+				{
+					i.CheckState = CheckState.Unchecked;
+				}
+			}
 		}
 
 		public void OnFormatBackground(object sender, EventArgs e)
@@ -342,8 +359,64 @@ namespace WaveManagerApp
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
-			Preferences.Directories = fileViewControl1.GetDirectories();
+			List<string> files = new List<string>();
+			foreach (Form f in MdiChildren)
+			{
+				MdiChild child = (MdiChild)f;
+				if (!child.CheckIfWantSaveChanges(true))
+				{
+					e.Cancel = true;
+					return;
+				}
+				files.Add(child.Text);
+			}
+			Preferences.OpenedWaves = files.ToArray();
 			Preferences.PersistPreferences(); 
+		}
+
+		private void OnEditCopy(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditCopy(sender, e);
+		}
+
+		private void OnEditCut(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditCut(sender, e);
+		}
+
+		private void OnEditPaste(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditPaste(sender, e);
+
+		}
+		private void OnEditDelete(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditDelete(sender, e);
+
+		}
+
+		private void OnViewNormalFull(object sender, EventArgs e)
+		{
+			ActiveChild.OnViewNormal(sender, e);
+
+		}
+
+		private void OnToolsPlay(object sender, EventArgs e)
+		{
+			ActiveChild.OnToolsPlay(sender, e);
+
+		}
+
+		private void OnToolsModulate(object sender, EventArgs e)
+		{
+			ActiveChild.OnToolsModulate(sender, e);
+
+		}
+
+		private void OnToolsRotate(object sender, EventArgs e)
+		{
+			ActiveChild.OnToolsRotate(sender, e);
+
 		}
 
 		

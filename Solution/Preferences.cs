@@ -13,12 +13,12 @@ namespace WaveManagerApp
 	class Preferences
 	{
 		private static Color _waveColor = Color.Green;
-		private static Color _waveBgColor = Color.Red;
+		private static Color _waveBgColor = Color.Black;
 		private static float _thickness = 1;
-		private static Color _fileViewBgColor = Color.Red;
+		private static Color _fileViewBgColor = Color.White;
 		private static Color _fileViewForeColor = Color.Black;
 		private static Font _fileViewFont = new Font("Arial", 12);
-		private static string[] _directories = new string[0];
+		private static string[] _openedWaves = new string[0];
 		
 		private static XmlDocument xmlDoc = new XmlDocument();
 
@@ -58,10 +58,10 @@ namespace WaveManagerApp
 			set { _thickness = value; }
 		}
 
-		public static string[] Directories
+		public static string[] OpenedWaves
 		{
-			get { return _directories; }
-			set { _directories = value; }
+			get { return _openedWaves; }
+			set { _openedWaves = value; }
 		}
 
 		public static Pen PenForWave()
@@ -202,7 +202,7 @@ namespace WaveManagerApp
 			Font f = new Font(family,
 				size,
 				style,
-				GraphicsUnit.Pixel,
+				GraphicsUnit.Point,
 				script );
 			return f;
 		}

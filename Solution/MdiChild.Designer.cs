@@ -30,6 +30,9 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveTSMI = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveAsTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.nornalFullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,6 +64,7 @@
 			// 
 			this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.editToolStripMenuItem,
             this.toolsToolStripMenuItem});
@@ -70,6 +74,31 @@
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			this.menuStrip1.Visible = false;
+			// 
+			// fileToolStripMenuItem
+			// 
+			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveTSMI,
+            this.saveAsTSMI});
+			this.fileToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.MatchOnly;
+			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
+			this.fileToolStripMenuItem.Text = "&File";
+			// 
+			// saveTSMI
+			// 
+			this.saveTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
+			this.saveTSMI.Name = "saveTSMI";
+			this.saveTSMI.Size = new System.Drawing.Size(152, 24);
+			this.saveTSMI.Text = "&Save";
+			// 
+			// saveAsTSMI
+			// 
+			this.saveAsTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
+			this.saveAsTSMI.Name = "saveAsTSMI";
+			this.saveAsTSMI.Size = new System.Drawing.Size(152, 24);
+			this.saveAsTSMI.Text = "Save &As";
+			this.saveAsTSMI.Click += new System.EventHandler(this.OnFileSaveAs);
 			// 
 			// viewToolStripMenuItem
 			// 
@@ -82,6 +111,7 @@
 			// 
 			// nornalFullToolStripMenuItem
 			// 
+			this.nornalFullToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.nornalFullToolStripMenuItem.Name = "nornalFullToolStripMenuItem";
 			this.nornalFullToolStripMenuItem.Size = new System.Drawing.Size(174, 24);
 			this.nornalFullToolStripMenuItem.Text = "Nornal/Full (2)";
@@ -105,6 +135,7 @@
 			// 
 			// undoTSMI
 			// 
+			this.undoTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.undoTSMI.Name = "undoTSMI";
 			this.undoTSMI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
 			this.undoTSMI.Size = new System.Drawing.Size(182, 24);
@@ -113,6 +144,7 @@
 			// 
 			// redoTSMI
 			// 
+			this.redoTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.redoTSMI.Name = "redoTSMI";
 			this.redoTSMI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
 			this.redoTSMI.Size = new System.Drawing.Size(182, 24);
@@ -126,6 +158,7 @@
 			// 
 			// cutTSMI
 			// 
+			this.cutTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.cutTSMI.Name = "cutTSMI";
 			this.cutTSMI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
 			this.cutTSMI.Size = new System.Drawing.Size(182, 24);
@@ -134,6 +167,7 @@
 			// 
 			// copyTSMI
 			// 
+			this.copyTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.copyTSMI.Name = "copyTSMI";
 			this.copyTSMI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
 			this.copyTSMI.Size = new System.Drawing.Size(182, 24);
@@ -142,6 +176,7 @@
 			// 
 			// copyAsBitmapTSMI
 			// 
+			this.copyAsBitmapTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.copyAsBitmapTSMI.Name = "copyAsBitmapTSMI";
 			this.copyAsBitmapTSMI.Size = new System.Drawing.Size(182, 24);
 			this.copyAsBitmapTSMI.Text = "Copy as Bitmap";
@@ -149,6 +184,7 @@
 			// 
 			// pasteTSMI
 			// 
+			this.pasteTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.pasteTSMI.Name = "pasteTSMI";
 			this.pasteTSMI.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
 			this.pasteTSMI.Size = new System.Drawing.Size(182, 24);
@@ -157,6 +193,7 @@
 			// 
 			// deleteTSMI
 			// 
+			this.deleteTSMI.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.deleteTSMI.Name = "deleteTSMI";
 			this.deleteTSMI.Size = new System.Drawing.Size(182, 24);
 			this.deleteTSMI.Text = "Delete";
@@ -175,6 +212,7 @@
 			// 
 			// playToolStripMenuItem
 			// 
+			this.playToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.playToolStripMenuItem.Name = "playToolStripMenuItem";
 			this.playToolStripMenuItem.Size = new System.Drawing.Size(142, 24);
 			this.playToolStripMenuItem.Text = "Play";
@@ -182,6 +220,7 @@
 			// 
 			// modulateToolStripMenuItem
 			// 
+			this.modulateToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.modulateToolStripMenuItem.Name = "modulateToolStripMenuItem";
 			this.modulateToolStripMenuItem.Size = new System.Drawing.Size(142, 24);
 			this.modulateToolStripMenuItem.Text = "Modulate";
@@ -189,6 +228,7 @@
 			// 
 			// rotateToolStripMenuItem
 			// 
+			this.rotateToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Replace;
 			this.rotateToolStripMenuItem.Name = "rotateToolStripMenuItem";
 			this.rotateToolStripMenuItem.Size = new System.Drawing.Size(142, 24);
 			this.rotateToolStripMenuItem.Text = "Rotate";
@@ -224,28 +264,28 @@
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem2.Text = "1";
 			this.toolStripMenuItem2.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem3.Text = "2";
 			this.toolStripMenuItem3.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem4.Text = "4";
 			this.toolStripMenuItem4.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
 			// toolStripMenuItem5
 			// 
 			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-			this.toolStripMenuItem5.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem5.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem5.Text = "8";
 			this.toolStripMenuItem5.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
@@ -268,6 +308,7 @@
 			this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.Name = "MdiChild";
 			this.Text = "MdiChildForm";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
 			this.Load += new System.EventHandler(this.OnLoad);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.OnPaint);
 			this.menuStrip1.ResumeLayout(false);
@@ -304,6 +345,9 @@
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
 		private System.Windows.Forms.ToolStripMenuItem backgroundToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveTSMI;
+		private System.Windows.Forms.ToolStripMenuItem saveAsTSMI;
 
 	}
 }
