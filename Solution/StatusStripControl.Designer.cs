@@ -30,7 +30,7 @@
 		{
 			this._tlpMain = new System.Windows.Forms.TableLayoutPanel();
 			this.samplesCount = new System.Windows.Forms.Label();
-			this._errorListBox = new System.Windows.Forms.ComboBox();
+			this._logListBox = new System.Windows.Forms.ComboBox();
 			this.wavesCount = new System.Windows.Forms.Label();
 			this._trackBar = new System.Windows.Forms.TrackBar();
 			this._tlpMain.SuspendLayout();
@@ -46,7 +46,7 @@
 			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this._tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this._tlpMain.Controls.Add(this.samplesCount, 2, 0);
-			this._tlpMain.Controls.Add(this._errorListBox, 0, 0);
+			this._tlpMain.Controls.Add(this._logListBox, 0, 0);
 			this._tlpMain.Controls.Add(this.wavesCount, 1, 0);
 			this._tlpMain.Controls.Add(this._trackBar, 3, 0);
 			this._tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -70,15 +70,15 @@
 			this.samplesCount.Text = "Samples: 0";
 			this.samplesCount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// _errorListBox
+			// _logListBox
 			// 
-			this._errorListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._errorListBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._errorListBox.FormattingEnabled = true;
-			this._errorListBox.Location = new System.Drawing.Point(3, 3);
-			this._errorListBox.Name = "_errorListBox";
-			this._errorListBox.Size = new System.Drawing.Size(323, 25);
-			this._errorListBox.TabIndex = 0;
+			this._logListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._logListBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._logListBox.FormattingEnabled = true;
+			this._logListBox.Location = new System.Drawing.Point(3, 3);
+			this._logListBox.Name = "_logListBox";
+			this._logListBox.Size = new System.Drawing.Size(323, 25);
+			this._logListBox.TabIndex = 0;
 			// 
 			// wavesCount
 			// 
@@ -121,7 +121,7 @@
 		#endregion
 
 		private System.Windows.Forms.TableLayoutPanel _tlpMain;
-		private System.Windows.Forms.ComboBox _errorListBox;
+		private System.Windows.Forms.ComboBox _logListBox;
 		private System.Windows.Forms.TrackBar _trackBar;
 		public System.Windows.Forms.Label wavesCount;
 		public System.Windows.Forms.Label samplesCount;

@@ -6,19 +6,19 @@ namespace WaveManagerApp
 {
 	public static class WaveMgr
 	{
-		public static bool IsValid(string fileName)
+		public static Wave IsValid(string fileName)
 		{
 			string ext = Path.GetExtension(fileName).ToLower();
 			if (ext != Wave.Extension)
-				return false;
+				return null;
 			
 			Wave w = Read(fileName);
 			//check if first 4 bytes is "RIFF" 
 			if (w.Header[0] != 82 || w.Header[1] != 73 || w.Header[2] != 70 || w.Header[3] != 70)
 			{
-				return false;
+				return null;
 			}
-			return true;
+			return w;
 		}
 
 		public static Wave Read(string fileName)

@@ -33,13 +33,13 @@ namespace WaveManagerApp
 		public StatusStripControl()
 		{
 			InitializeComponent();
-			Log.errorEvent += OnErrorEvent;
+			Log.logEvent += OnLogEvent;
 		}
 
-		void OnErrorEvent(string message)
+		void OnLogEvent(string message)
 		{
-			int i = _errorListBox.Items.Add(message);
-			_errorListBox.SelectedIndex = i;
+			int i = _logListBox.Items.Add(message);
+			_logListBox.SelectedIndex = i;
 		}
 
 		#endregion
@@ -72,11 +72,6 @@ namespace WaveManagerApp
 			_oldvalue = _trackBar.Value;
 		}
 
-
-
-		#region Event Handlers
-
-		#endregion
 
 
 	}

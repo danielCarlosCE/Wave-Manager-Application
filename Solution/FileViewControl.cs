@@ -85,7 +85,7 @@ namespace WaveManagerApp
 			return children;
 		}
 
-			
+		#region FileWatch
 		[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
 		private  void Watch(string directoryName)
 		{
@@ -133,7 +133,7 @@ namespace WaveManagerApp
 				}
 			}
 		}
-		
+		#endregion
 
 		private void OnTreeViewItemDrag(object sender, ItemDragEventArgs e)
 		{
@@ -155,6 +155,7 @@ namespace WaveManagerApp
 				DoubleClickEvent(fileName);
 		}
 
+		#region Context Menu
 		private void OnContextMenuFont(object sender, EventArgs e)
 		{
 			FontDialog fontDialog1 = new FontDialog();
@@ -184,8 +185,8 @@ namespace WaveManagerApp
 			}
 
 		}
+		#endregion
 
 
-	
 	}
 }

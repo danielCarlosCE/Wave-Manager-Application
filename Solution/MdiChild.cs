@@ -64,9 +64,15 @@ namespace WaveManagerApp
 			_original = (Text.Contains("\\")) ? Wave.CopyWave(_wave) : null;
 			Application.Idle += OnIdle;
 		}
-		#endregion
+
+		private void OnFormClosing(object sender, FormClosingEventArgs e)
+		{
+			e.Cancel = !CheckIfWantSaveChanges(true);
+		}
 
 		
+		#endregion
+	
 		#region Menu Events
 
 		#region Edit Menu
@@ -121,12 +127,15 @@ namespace WaveManagerApp
 		}
 		#endregion
 
+		#region View Menu
 		public void OnViewNormal(object sender, EventArgs e)
 		{
 			IsNormal = !IsNormal;
 			Invalidate();
 		}
+		#endregion
 
+		#region Tools Menu
 		public void OnToolsPlay(object sender, EventArgs e)
 		{
 			if (Wave == null) return;
@@ -137,11 +146,52 @@ namespace WaveManagerApp
 			player.Play();
 			
 		}
+		#endregion
 
+		#region File Menu
 		private void OnFileSaveAs(object sender, EventArgs e)
 		{
 			SaveWaveAs();
 		}
+		#endregion
+
+		#region Tools Menu
+		public void OnToolsModulate(object sender, EventArgs e)
+		{
+
+			WillModify();
+			for (int i = 0; i < Wave.NumberOfSamples; i++)
+			{
+				Wave.Samples[i] = (byte)(Math.Sin(i + 3.2f) * 20 + Wave.Samples[i]);
+			}
+			Invalidate();
+		}
+
+		public void OnToolsRotate(object sender, EventArgs e)
+		{
+			WillModify();
+			Array.Reverse(Wave.Samples);
+			Invalidate();
+		}
+
+		#endregion
+
+		#region Format Menu
+		public void OnFormatColor(object sender, EventArgs e)
+		{
+			MainForm.OnFormatColor(sender, e);
+		}
+
+		public void OnFormatThickness(object sender, EventArgs e)
+		{
+			MainForm.OnFormatThickness(sender, e);
+		}
+
+		public void OnFormatBackground(object sender, EventArgs e)
+		{
+			MainForm.OnFormatBackground(sender, e);
+		}
+		#endregion
 
 		#endregion
 
@@ -158,39 +208,9 @@ namespace WaveManagerApp
 		}
 		private void OnPaint(object sender, PaintEventArgs e)
 		{
-			
-
-			Graphics g = e.Graphics;
-			g.Clear(Preferences.WaveBgColor);
-			if (_wave == null)
-				return;
-
-			if (_isNormal)
-			{
-				// Scrolling
-				AutoScrollMinSize = new Size(_wave.NumberOfSamples, Wave.MaxSampleValue);
-				g.TranslateTransform(AutoScrollPosition.X, AutoScrollPosition.Y);
-
-			}
-			else
-			{
-				// Zooming
-				float xScaleFactor = (float)ClientRectangle.Width / _wave.NumberOfSamples;
-				float yScaleFactor = (float)ClientRectangle.Height / Wave.MaxSampleValue;
-				g.ScaleTransform(xScaleFactor, yScaleFactor);
-				AutoScrollMinSize = new Size(0, 0);
-
-			}
-			for (int i = 0; i < _wave.NumberOfSamples - 1; i++)
-			{
-				g.DrawLine(Preferences.PenForWave(), i, _wave.Samples[i], i + 1, _wave.Samples[i + 1]);
-			}
+			paintDraw(e.Graphics, true);
 		}
-	
-		
 		#endregion
-
-
 		
 		private void WillModify()
 		{
@@ -200,7 +220,6 @@ namespace WaveManagerApp
 			if (_undoUsed) _undoUsed = false;
 		}
 		
-
 		public static Wave WaveFromClipBoard()
 		{
 			
@@ -225,7 +244,7 @@ namespace WaveManagerApp
 
 				Bitmap newBitmap = new Bitmap(width, height, CreateGraphics());
 				Graphics memryGraphics = Graphics.FromImage(newBitmap);
-				paintDraw(memryGraphics);
+				paintDraw(memryGraphics, false);
 			
 				return newBitmap;
 			
@@ -323,7 +342,7 @@ namespace WaveManagerApp
 			}
 		}
 
-		private void paintDraw(Graphics g)
+		private void paintDraw(Graphics g, bool setAutoScroll)
 		{
 			g.Clear(Preferences.WaveBgColor);
 			if (_wave == null)
@@ -331,6 +350,9 @@ namespace WaveManagerApp
 
 			if (IsNormal)
 			{
+				if (setAutoScroll)
+					AutoScrollMinSize = new Size(_wave.NumberOfSamples, Wave.MaxSampleValue);
+				
 				g.TranslateTransform(AutoScrollPosition.X, AutoScrollPosition.Y);
 			}
 			else
@@ -339,6 +361,9 @@ namespace WaveManagerApp
 				float xScaleFactor = (float)ClientRectangle.Width / Wave.NumberOfSamples;
 				float yScaleFactor = (float)ClientRectangle.Height / Wave.MaxSampleValue;
 				g.ScaleTransform(xScaleFactor, yScaleFactor);
+				if (setAutoScroll)
+					AutoScrollMinSize = new Size(0, 0);
+
 			}
 
 
@@ -347,41 +372,9 @@ namespace WaveManagerApp
 				int y1 = Wave.Samples[i];
 				int y2 = Wave.Samples[i + 1];
 
-				g.DrawLine(new Pen(Preferences.WaveColor), i, y1, i + 1, y2);
+				g.DrawLine(Preferences.PenForWave(), i, y1, i + 1, y2);
 			}
 
-		}
-
-		public void OnToolsModulate(object sender, EventArgs e)
-		{
-
-			WillModify();
-			for(int i =0;i<Wave.NumberOfSamples;i++){
-				Wave.Samples[i] = (byte) (Math.Sin(i+3.2f)*20 + Wave.Samples[i]);
-			}
-			Invalidate();
-		}
-
-		public void OnToolsRotate(object sender, EventArgs e)
-		{
-			WillModify();
-			Array.Reverse(Wave.Samples);
-			Invalidate();
-		}
-
-		public void OnFormatColor(object sender, EventArgs e)
-		{
-			MainForm.OnFormatColor(sender,e);
-		}
-
-		public void OnFormatThickness(object sender, EventArgs e)
-		{
-			MainForm.OnFormatThickness(sender, e);
-		}
-
-		public void OnFormatBackground(object sender, EventArgs e)
-		{
-			MainForm.OnFormatBackground(sender, e);
 		}
 
 		private Color ChangeColorWithDialog(Color defaultValue)
@@ -397,10 +390,6 @@ namespace WaveManagerApp
 
 		}
 
-		private void OnFormClosing(object sender, FormClosingEventArgs e)
-		{
-				e.Cancel = !CheckIfWantSaveChanges(true);
-		}
 
 	
 	}

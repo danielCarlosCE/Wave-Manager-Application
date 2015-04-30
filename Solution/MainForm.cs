@@ -13,10 +13,12 @@ namespace WaveManagerApp
 {
 	public partial class MainForm : Form
 	{
+		#region Properties
 		public static event OpenFileEventHandler OpenFileEvent;
 		private const string _filterOpen = "Wave Files|*" + Wave.Extension;
 		private const string PngExtension = ".png";
 		private const string _filterSave = _filterOpen + "|" + "Png Files|*"+PngExtension;
+		private const string _invalidFileError = "Invalid wave file.";
 
 		private PrintDocument _printDoc = new PrintDocument();
 		private int count = 0;
@@ -29,16 +31,15 @@ namespace WaveManagerApp
 				return active;
 			}
 		}
-
+		#endregion
 
 		public MainForm()
 		{
 			Preferences.LoadPreferences();
 			InitializeComponent();
-			
-
-			
 		}
+
+		#region Menu Events
 
 		#region FileMenu
 		private void OnFileNew(object sender, EventArgs e)
@@ -119,6 +120,134 @@ namespace WaveManagerApp
 		}
 		#endregion
 
+		#region WindowMenu
+		private void OnWindowTileHorizontally(object sender, EventArgs e)
+		{
+			LayoutMdi(MdiLayout.TileHorizontal);
+		}
+		private void OnWindowTileVertically(object sender, EventArgs e)
+		{
+			LayoutMdi(MdiLayout.TileVertical);
+		}
+		private void OnWindowCascade(object sender, EventArgs e)
+		{
+			LayoutMdi(MdiLayout.Cascade);
+		}
+		#endregion
+
+		#region ViewMenu
+		private void OnViewToolBar(object sender, EventArgs e)
+		{
+			toolStrip.Visible = !toolStrip.Visible;
+		}
+
+		private void OnViewStatusBar(object sender, EventArgs e)
+		{
+			statusStripControl.Visible = !statusStripControl.Visible;
+		}
+
+		private void OnViewNormalFull(object sender, EventArgs e)
+		{
+			ActiveChild.OnViewNormal(sender, e);
+
+		}
+
+		#endregion
+
+		#region HelpMenu
+		private void OnHelpAbout(object sender, EventArgs e)
+		{
+			new HelpForm().ShowDialog();
+		}
+		#endregion
+
+		#region FormMenu
+		private void OnFormClosing(object sender, FormClosingEventArgs e)
+		{
+			List<string> files = new List<string>();
+			foreach (Form f in MdiChildren)
+			{
+				MdiChild child = (MdiChild)f;
+				if (!child.CheckIfWantSaveChanges(true))
+				{
+					e.Cancel = true;
+					return;
+				}
+				files.Add(child.Text);
+			}
+			Preferences.OpenedWaves = files.ToArray();
+			Preferences.PersistPreferences();
+		}
+		#endregion
+
+		#region EditMenu
+		private void OnEditCopy(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditCopy(sender, e);
+		}
+
+		private void OnEditCut(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditCut(sender, e);
+		}
+
+		private void OnEditPaste(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditPaste(sender, e);
+
+		}
+		private void OnEditDelete(object sender, EventArgs e)
+		{
+			ActiveChild.OnEditDelete(sender, e);
+
+		}
+		#endregion
+
+		#region ToolsMenu
+		private void OnToolsPlay(object sender, EventArgs e)
+		{
+			ActiveChild.OnToolsPlay(sender, e);
+
+		}
+
+		private void OnToolsModulate(object sender, EventArgs e)
+		{
+			ActiveChild.OnToolsModulate(sender, e);
+
+		}
+
+		private void OnToolsRotate(object sender, EventArgs e)
+		{
+			ActiveChild.OnToolsRotate(sender, e);
+
+		}
+		#endregion
+
+		#region FormatMenu
+		public void OnFormatColor(object sender, EventArgs e)
+		{
+			Preferences.WaveColor = ChangeColorWithDialog(Preferences.WaveColor);
+			InvalidadeChildren();
+		}
+
+		public void OnFormatThickness(object sender, EventArgs e)
+		{
+
+			Preferences.Thickness = float.Parse(((ToolStripMenuItem)sender).Text);
+			CheckThicknessMenu();
+			InvalidadeChildren();
+
+		}
+
+		public void OnFormatBackground(object sender, EventArgs e)
+		{
+			Preferences.WaveBgColor = ChangeColorWithDialog(Preferences.WaveBgColor);
+			InvalidadeChildren();
+		}
+
+		#endregion
+		#endregion
+
 		#region UI Events
 		private void OnLoad(object sender, EventArgs e)
 		{
@@ -127,7 +256,7 @@ namespace WaveManagerApp
 			_printDoc.PrintPage += OnPrintPage;
 			LaunchWaveChild(Preferences.OpenedWaves);
 			CheckThicknessMenu();
-
+			Log.info("Wave Manager successfully started");
 			
 		}
 
@@ -218,54 +347,48 @@ namespace WaveManagerApp
 			
 
 		}
-
-		#endregion
-		private void OnWindowTileHorizontally(object sender, EventArgs e)
-		{
-			LayoutMdi(MdiLayout.TileHorizontal);
-		}
-
-		private void OnWindowTileVertically(object sender, EventArgs e)
-		{
-			LayoutMdi(MdiLayout.TileVertical);
-		}
-		private void OnWindowCascade(object sender, EventArgs e)
-		{
-			LayoutMdi(MdiLayout.Cascade);
-		}
-
+		#endregion	
 		private void LaunchWaveChild(string[] fileNames)
 		{
 			foreach (String fileName in fileNames)
 			{
-				if (!WaveMgr.IsValid(fileName))
-					return;
-				Wave w = null;
+				Wave w;
+				string error = null; 
 				try
 				{
+					 w = WaveMgr.IsValid(fileName);
+					 if (w == null)
+					 {
+						 error = _invalidFileError;
+						 break;
+					 }
 
-					 w = WaveMgr.Read(fileName);
+					 MdiChild c = new MdiChild();
+					 c.Wave = w;
+					 c.MdiParent = this;
+					 c.Show();
+					 if (OpenFileEvent != null)
+					 {
+						 OpenFileEvent(fileName);
+					 }
 
 				}
 				catch (Exception e)
 				{
-					MessageBox.Show("Invalid wave file.");
-					Log.error(e.Message);
-					return;
+					error = _invalidFileError;
+					Console.Write(e.Message);
 				}
-				MdiChild c = new MdiChild();
-				c.Wave = w;
-				c.MdiParent = this;
-				c.Show();
-				if (OpenFileEvent != null)
+				finally
 				{
-					OpenFileEvent(fileName);
+					if (error != null)
+					{
+						MessageBox.Show(error);
+						Log.error(error);
+					}
 				}
+				
 			}
 		}
-
-		
-
 
 		private void CloseChild(MdiChild child)
 		{
@@ -280,20 +403,6 @@ namespace WaveManagerApp
 
 			child.Close();
 		}
-
-		
-
-		private void OnViewToolBar(object sender, EventArgs e)
-		{
-			toolStrip.Visible = !toolStrip.Visible;
-		}
-
-		private void OnViewStatusBar(object sender, EventArgs e)
-		{
-			statusStripControl.Visible = !statusStripControl.Visible;
-		}
-
-		
 
 		public void InvalidadeChildren()
 		{
@@ -316,21 +425,6 @@ namespace WaveManagerApp
 			
 		}
 
-		public void OnFormatColor(object sender, EventArgs e)
-		{
-			Preferences.WaveColor = ChangeColorWithDialog(Preferences.WaveColor);
-			InvalidadeChildren();
-		}
-
-		public void OnFormatThickness(object sender, EventArgs e)
-		{
-			
-			Preferences.Thickness = float.Parse(((ToolStripMenuItem)sender).Text);
-			CheckThicknessMenu();
-			InvalidadeChildren();
-			
-		}
-
 		private void CheckThicknessMenu()
 		{
 			foreach (ToolStripMenuItem i in thickTSB.DropDownItems)
@@ -346,81 +440,7 @@ namespace WaveManagerApp
 			}
 		}
 
-		public void OnFormatBackground(object sender, EventArgs e)
-		{
-			Preferences.WaveBgColor = ChangeColorWithDialog(Preferences.WaveBgColor);
-			InvalidadeChildren();
-		}
 
-		private void OnHelpAbout(object sender, EventArgs e)
-		{
-			new HelpForm().ShowDialog();
-		}
-
-		private void OnFormClosing(object sender, FormClosingEventArgs e)
-		{
-			List<string> files = new List<string>();
-			foreach (Form f in MdiChildren)
-			{
-				MdiChild child = (MdiChild)f;
-				if (!child.CheckIfWantSaveChanges(true))
-				{
-					e.Cancel = true;
-					return;
-				}
-				files.Add(child.Text);
-			}
-			Preferences.OpenedWaves = files.ToArray();
-			Preferences.PersistPreferences(); 
-		}
-
-		private void OnEditCopy(object sender, EventArgs e)
-		{
-			ActiveChild.OnEditCopy(sender, e);
-		}
-
-		private void OnEditCut(object sender, EventArgs e)
-		{
-			ActiveChild.OnEditCut(sender, e);
-		}
-
-		private void OnEditPaste(object sender, EventArgs e)
-		{
-			ActiveChild.OnEditPaste(sender, e);
-
-		}
-		private void OnEditDelete(object sender, EventArgs e)
-		{
-			ActiveChild.OnEditDelete(sender, e);
-
-		}
-
-		private void OnViewNormalFull(object sender, EventArgs e)
-		{
-			ActiveChild.OnViewNormal(sender, e);
-
-		}
-
-		private void OnToolsPlay(object sender, EventArgs e)
-		{
-			ActiveChild.OnToolsPlay(sender, e);
-
-		}
-
-		private void OnToolsModulate(object sender, EventArgs e)
-		{
-			ActiveChild.OnToolsModulate(sender, e);
-
-		}
-
-		private void OnToolsRotate(object sender, EventArgs e)
-		{
-			ActiveChild.OnToolsRotate(sender, e);
-
-		}
-
-		
-		
 
 	}
 }

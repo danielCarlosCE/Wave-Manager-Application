@@ -157,7 +157,7 @@ namespace WaveManagerApp
 			else
 			if (obj is Font)
 			{
-				AddAttributes((Font)obj,node);
+				ParseFont((Font)obj,node);
 			}
 			else if (obj is string[])
 			{
@@ -177,7 +177,7 @@ namespace WaveManagerApp
 			return node;
 		}
 
-		private static void AddAttributes(Font f, XmlNode node)
+		private static void ParseFont(Font f, XmlNode node)
 		{
 			XmlAttribute attribute = xmlDoc.CreateAttribute("family");
 			attribute.Value = f.FontFamily.Name;
