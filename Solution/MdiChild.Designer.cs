@@ -91,6 +91,7 @@
 			this.saveTSMI.Name = "saveTSMI";
 			this.saveTSMI.Size = new System.Drawing.Size(152, 24);
 			this.saveTSMI.Text = "&Save";
+			this.saveTSMI.Click += new System.EventHandler(this.OnFileSave);
 			// 
 			// saveAsTSMI
 			// 

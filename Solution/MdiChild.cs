@@ -153,6 +153,12 @@ namespace WaveManagerApp
 		{
 			SaveWaveAs();
 		}
+
+
+		private void OnFileSave(object sender, EventArgs e)
+		{
+			SaveWave();
+		}
 		#endregion
 
 		#region Tools Menu
@@ -389,6 +395,7 @@ namespace WaveManagerApp
 			return defaultValue;
 
 		}
+
 
 
 	

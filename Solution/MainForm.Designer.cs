@@ -253,6 +253,7 @@
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
 			this.exitToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
 			this.exitToolStripMenuItem.Text = "E&xit";
+			this.exitToolStripMenuItem.Click += new System.EventHandler(this.OnFileExit);
 			// 
 			// editToolStripMenuItem
 			// 
@@ -721,28 +722,28 @@
 			// toolStripMenuItem8
 			// 
 			this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-			this.toolStripMenuItem8.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem8.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem8.Text = "1";
 			this.toolStripMenuItem8.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
 			// toolStripMenuItem9
 			// 
 			this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-			this.toolStripMenuItem9.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem9.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem9.Text = "2";
 			this.toolStripMenuItem9.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
 			// toolStripMenuItem10
 			// 
 			this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-			this.toolStripMenuItem10.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem10.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem10.Text = "4";
 			this.toolStripMenuItem10.Click += new System.EventHandler(this.OnFormatThickness);
 			// 
 			// toolStripMenuItem11
 			// 
 			this.toolStripMenuItem11.Name = "toolStripMenuItem11";
-			this.toolStripMenuItem11.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem11.Size = new System.Drawing.Size(80, 22);
 			this.toolStripMenuItem11.Text = "8";
 			this.toolStripMenuItem11.Click += new System.EventHandler(this.OnFormatThickness);
 			// 

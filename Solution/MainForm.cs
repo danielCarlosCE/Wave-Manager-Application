@@ -118,6 +118,11 @@ namespace WaveManagerApp
 			_printDoc.Print();
 
 		}
+
+		private void OnFileExit(object sender, EventArgs e)
+		{
+			System.Windows.Forms.Application.Exit();
+		}
 		#endregion
 
 		#region WindowMenu
@@ -168,6 +173,7 @@ namespace WaveManagerApp
 			foreach (Form f in MdiChildren)
 			{
 				MdiChild child = (MdiChild)f;
+				if (child.Wave == null) return;
 				if (!child.CheckIfWantSaveChanges(true))
 				{
 					e.Cancel = true;
@@ -295,7 +301,8 @@ namespace WaveManagerApp
 			LaunchWaveChild(new string[]{fileName});
 		}
 		private void OnIdle(object sender, EventArgs e) {
-			
+
+			printPreviewToolStripMenuItem.Enabled = printToolStripMenuItem.Enabled = ActiveChild != null && ActiveChild.Wave !=null;
 			saveTSB.Enabled = ActiveChild!=null && ActiveChild.Modified;
 			printTSB.Enabled = ActiveChild != null;
 			statusStripControl.wavesCount.Text = "Waves: "+MdiChildren.Length;
